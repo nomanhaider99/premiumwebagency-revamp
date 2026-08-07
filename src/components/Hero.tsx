@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
-import HeroForm from "@/components/HeroForm";
+import MagneticButton from "@/components/MagneticButton";
 import HeroScene from "@/components/HeroScene";
 
 export default function Hero() {
@@ -38,16 +38,16 @@ export default function Hero() {
           "-=0.5"
         )
         .fromTo(
+          ".hero-cta",
+          { opacity: 0, y: 24 },
+          { opacity: 1, y: 0, duration: 0.7, stagger: 0.1 },
+          "-=0.5"
+        )
+        .fromTo(
           ".hero-stats",
           { opacity: 0, y: 16 },
           { opacity: 1, y: 0, duration: 0.7 },
           "-=0.5"
-        )
-        .fromTo(
-          ".hero-visual",
-          { opacity: 0, y: 30, scale: 0.97 },
-          { opacity: 1, y: 0, scale: 1, duration: 1 },
-          "-=0.8"
         );
     }, rootRef);
 
@@ -76,62 +76,66 @@ export default function Hero() {
         }}
       />
 
-      {/* ambient 3D glass form — sits behind the form card, adds depth without competing for legibility */}
-      <HeroScene className="pointer-events-none absolute right-[-10%] top-1/2 hidden h-[720px] w-[720px] -translate-y-1/2 opacity-95 md:block lg:right-[-6%]" />
+      {/* ambient 3D glass shape, floating behind the copy on the right */}
+      <HeroScene className="pointer-events-none absolute right-[-6%] top-1/2 hidden h-[720px] w-[720px] -translate-y-1/2 opacity-95 md:block lg:right-[2%]" />
 
-      <div className="container-px relative z-10 grid gap-16 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-12">
-        <div>
-          <span className="hero-eyebrow inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-4 py-1.5 font-[family-name:var(--font-alt)] text-sm text-white/70">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--color-primary)] opacity-75" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[color:var(--color-primary)]" />
-            </span>
-            Web Design &middot; Development &middot; Marketing &middot; SEO
+      <div className="container-px relative z-10">
+        <span className="hero-eyebrow inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-4 py-1.5 font-[family-name:var(--font-alt)] text-sm text-white/70">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[color:var(--color-primary)] opacity-75" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[color:var(--color-primary)]" />
           </span>
+          Web Design &middot; Development &middot; Marketing &middot; SEO
+        </span>
 
-          <h1 className="mt-8 max-w-2xl font-[family-name:var(--font-display)] text-4xl font-bold leading-[1.1] tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            <span className="hero-line block overflow-hidden">Websites built</span>
-            <span className="hero-line block overflow-hidden">
-              for brands that play at the{" "}
-              <span className="text-[color:var(--color-primary)]">premium</span>{" "}
-              level.
-            </span>
-          </h1>
+        <h1 className="mt-8 max-w-2xl font-[family-name:var(--font-display)] text-4xl font-bold leading-[1.1] tracking-tight text-balance sm:text-5xl lg:text-6xl">
+          <span className="hero-line block overflow-hidden">Websites built</span>
+          <span className="hero-line block overflow-hidden">
+            for brands that play at the{" "}
+            <span className="text-[color:var(--color-primary)]">premium</span>{" "}
+            level.
+          </span>
+        </h1>
 
-          <p className="hero-sub mt-7 max-w-lg text-lg leading-relaxed text-white/65">
-            We design, build, and grow high-end digital experiences — pairing
-            award-worthy design with performance marketing and SEO that
-            compounds. One studio, end to end.
-          </p>
+        <p className="hero-sub mt-7 max-w-lg text-lg leading-relaxed text-white/65">
+          We design, build, and grow high-end digital experiences — pairing
+          award-worthy design with performance marketing and SEO that
+          compounds. One studio, end to end.
+        </p>
 
-          <div className="hero-stats mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
-            <div>
-              <p className="font-[family-name:var(--font-display)] text-2xl font-bold text-white">
-                120+
-              </p>
-              <p className="text-xs text-white/45">Projects delivered</p>
-            </div>
-            <span className="hidden h-8 w-px bg-white/10 sm:block" />
-            <div>
-              <p className="font-[family-name:var(--font-display)] text-2xl font-bold text-white">
-                98%
-              </p>
-              <p className="text-xs text-white/45">Client retention</p>
-            </div>
-            <span className="hidden h-8 w-px bg-white/10 sm:block" />
-            <a
+        <div className="mt-10 flex flex-wrap items-center gap-4">
+          <div className="hero-cta">
+            <MagneticButton href="/contact" variant="light">
+              Start a project
+              <span aria-hidden>→</span>
+            </MagneticButton>
+          </div>
+          <div className="hero-cta">
+            <MagneticButton
               href="/work"
-              className="group inline-flex items-center gap-1.5 text-sm font-medium text-white/80 transition-colors hover:text-[color:var(--color-primary)]"
+              variant="outline"
+              className="!border-white/20 !text-white hover:!border-[color:var(--color-primary)] hover:!text-[color:var(--color-primary)]"
             >
               View our work
-              <span aria-hidden className="transition-transform group-hover:translate-x-0.5">
-                →
-              </span>
-            </a>
+            </MagneticButton>
           </div>
         </div>
 
-        <HeroForm />
+        <div className="hero-stats mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+          <div>
+            <p className="font-[family-name:var(--font-display)] text-2xl font-bold text-white">
+              120+
+            </p>
+            <p className="text-xs text-white/45">Projects delivered</p>
+          </div>
+          <span className="hidden h-8 w-px bg-white/10 sm:block" />
+          <div>
+            <p className="font-[family-name:var(--font-display)] text-2xl font-bold text-white">
+              98%
+            </p>
+            <p className="text-xs text-white/45">Client retention</p>
+          </div>
+        </div>
       </div>
     </section>
   );
