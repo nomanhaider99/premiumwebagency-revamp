@@ -68,8 +68,10 @@ export default function HeroScene({ className = "" }: { className?: string }) {
 
     const onMouseMove = (e: MouseEvent) => {
       const rect = container.getBoundingClientRect();
-      const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      const ny = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+      const rawX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      const rawY = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+      const nx = Math.max(-1, Math.min(1, rawX));
+      const ny = Math.max(-1, Math.min(1, rawY));
       gsap.to(mesh.rotation, {
         x: ny * 0.25,
         y: nx * 0.35,

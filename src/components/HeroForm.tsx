@@ -30,14 +30,14 @@ export default function HeroForm() {
     <div className="hero-visual relative mx-auto w-full max-w-[440px] lg:mx-0 lg:ml-auto">
       {/* soft contained glow behind the card */}
       <div
-        className="pointer-events-none absolute -inset-10 -z-10 rounded-[40px] opacity-40 blur-[70px]"
+        className="pointer-events-none absolute -inset-10 -z-10 rounded-[40px] opacity-25 blur-[70px]"
         style={{
           background:
             "radial-gradient(closest-side, var(--color-primary) 0%, transparent 75%)",
         }}
       />
 
-      <div className="relative overflow-hidden rounded-[28px] border border-white/12 bg-white/[0.06] p-8 shadow-2xl shadow-black/50 backdrop-blur-2xl sm:p-9">
+      <div className="relative overflow-hidden rounded-[28px] border border-white/12 bg-[color:var(--color-ink)]/70 p-8 shadow-2xl shadow-black/50 backdrop-blur-3xl sm:p-9">
         {/* top hairline sheen */}
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
 
