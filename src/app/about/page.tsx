@@ -53,7 +53,7 @@ export default function AboutPage() {
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
               Our story
             </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-[color:var(--color-ink)] sm:text-4xl">
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-[color:var(--color-ink)] sm:text-4xl">
               We started this studio because most agencies make you choose.
             </h2>
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-[color:var(--color-ink)]/65">
@@ -87,7 +87,7 @@ export default function AboutPage() {
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
               What we believe
             </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-[color:var(--color-ink)] sm:text-4xl">
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-[color:var(--color-ink)] sm:text-4xl">
               The principles behind every project.
             </h2>
           </AnimateIn>
@@ -101,7 +101,7 @@ export default function AboutPage() {
                 <span className="font-[family-name:var(--font-alt)] text-sm text-[color:var(--color-ink)]/35">
                   0{i + 1}
                 </span>
-                <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl font-semibold text-[color:var(--color-ink)]">
+                <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl font-semibold tracking-wide text-[color:var(--color-ink)]">
                   {v.title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-[color:var(--color-ink)]/60">
@@ -117,7 +117,7 @@ export default function AboutPage() {
         <div className="noise-overlay" />
         <div className="container-px relative">
           <AnimateIn>
-            <h2 className="mx-auto max-w-2xl font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+            <h2 className="mx-auto max-w-2xl font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-balance sm:text-4xl lg:text-5xl">
               Want to see if we&apos;re the right fit?
             </h2>
           </AnimateIn>

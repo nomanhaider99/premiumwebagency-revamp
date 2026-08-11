@@ -38,7 +38,7 @@ export default function ContactPage() {
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
               Get in touch
             </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-[color:var(--color-ink)] sm:text-4xl">
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-[color:var(--color-ink)] sm:text-4xl">
               Direct access to the team building your site.
             </h2>
             <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[color:var(--color-ink)]/65">

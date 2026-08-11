@@ -116,7 +116,7 @@ export default function ProcessSteps() {
                 <span className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-[color:var(--color-primary)] to-[color:var(--color-sky)] text-white shadow-lg shadow-black/20">
                   <Icon className="h-5 w-5" strokeWidth={1.75} />
                 </span>
-                <h3 className="relative mt-5 font-[family-name:var(--font-display)] text-xl font-semibold text-white">
+                <h3 className="relative mt-5 font-[family-name:var(--font-display)] text-xl font-semibold tracking-wide text-white">
                   {step.title}
                 </h3>
                 <p className="relative mt-2 text-sm leading-relaxed text-white/60">

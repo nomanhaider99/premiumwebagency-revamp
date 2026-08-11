@@ -31,7 +31,7 @@ export default function PageHero({ eyebrow, title, description }: PageHeroProps)
           </span>
         </AnimateIn>
         <AnimateIn delay={0.1}>
-          <h1 className="mt-6 max-w-3xl font-[family-name:var(--font-display)] text-4xl font-bold leading-[1.08] tracking-tight text-balance sm:text-5xl lg:text-6xl">
+          <h1 className="mt-6 max-w-3xl font-[family-name:var(--font-display)] text-4xl font-bold leading-[1.08] tracking-wide text-balance sm:text-5xl lg:text-6xl">
             {title}
           </h1>
         </AnimateIn>

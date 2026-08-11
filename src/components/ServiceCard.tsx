@@ -1,34 +1,13 @@
 import Link from "next/link";
-import {
-  Palette,
-  Code2,
-  ShoppingCart,
-  Smartphone,
-  Sparkles,
-  Megaphone,
-  Search,
-  LifeBuoy,
-  type LucideIcon,
-} from "lucide-react";
 import type { Service } from "@/data/services";
-
-const icons: Record<string, LucideIcon> = {
-  design: Palette,
-  development: Code2,
-  ecommerce: ShoppingCart,
-  mobile: Smartphone,
-  branding: Sparkles,
-  marketing: Megaphone,
-  seo: Search,
-  support: LifeBuoy,
-};
+import { getServiceIcon } from "@/lib/service-icons";
 
 export default function ServiceCard({ service }: { service: Service }) {
-  const Icon = icons[service.id] ?? Sparkles;
+  const Icon = getServiceIcon(service.id);
 
   return (
     <Link
-      href={`/services#${service.id}`}
+      href={`/services/${service.id}`}
       className="group relative z-0 block h-full transition-transform duration-500 ease-out hover:z-30 hover:-translate-y-2 focus-visible:z-30 focus-visible:-translate-y-2"
     >
       <div className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-[color:var(--color-ink)]/10 bg-white p-8 transition-all duration-500 ease-out group-hover:rounded-b-none group-hover:shadow-2xl group-hover:shadow-[color:var(--color-primary)]/15 group-focus-within:rounded-b-none group-focus-within:shadow-2xl group-focus-within:shadow-[color:var(--color-primary)]/15">
@@ -43,7 +22,7 @@ export default function ServiceCard({ service }: { service: Service }) {
           <Icon className="h-5 w-5" strokeWidth={1.75} />
         </span>
 
-        <h3 className="relative mt-8 font-[family-name:var(--font-display)] text-2xl font-semibold text-[color:var(--color-ink)]">
+        <h3 className="relative mt-8 font-[family-name:var(--font-display)] text-2xl font-semibold tracking-wide text-[color:var(--color-ink)]">
           {service.title}
         </h3>
         <p className="relative mt-1 text-sm font-medium text-[color:var(--color-primary)]">

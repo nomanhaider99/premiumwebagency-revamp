@@ -35,7 +35,7 @@ export default function ContactForm() {
         <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[color:var(--color-primary)] text-2xl text-white">
           ✓
         </span>
-        <h3 className="mt-6 font-[family-name:var(--font-display)] text-2xl font-semibold text-[color:var(--color-ink)]">
+        <h3 className="mt-6 font-[family-name:var(--font-display)] text-2xl font-semibold tracking-wide text-[color:var(--color-ink)]">
           Message sent.
         </h3>
         <p className="mt-2 text-sm text-[color:var(--color-ink)]/60">

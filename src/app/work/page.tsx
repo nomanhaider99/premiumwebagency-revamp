@@ -37,7 +37,7 @@ export default function WorkPage() {
         <div className="noise-overlay" />
         <div className="container-px relative">
           <AnimateIn>
-            <h2 className="mx-auto max-w-2xl font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+            <h2 className="mx-auto max-w-2xl font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-balance sm:text-4xl lg:text-5xl">
               Your brand could be next.
             </h2>
           </AnimateIn>

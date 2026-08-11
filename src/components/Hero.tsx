@@ -88,7 +88,7 @@ export default function Hero() {
           Web Design &middot; Development &middot; Marketing &middot; SEO
         </span>
 
-        <h1 className="mt-8 max-w-2xl font-[family-name:var(--font-display)] text-4xl font-bold leading-[1.1] tracking-tight text-balance sm:text-5xl lg:text-6xl">
+        <h1 className="mt-8 max-w-2xl font-[family-name:var(--font-display)] text-4xl font-bold leading-[1.1] tracking-wide text-balance sm:text-5xl lg:text-6xl">
           <span className="hero-line block overflow-hidden">Websites built</span>
           <span className="hero-line block overflow-hidden">
             for brands that play at the{" "}

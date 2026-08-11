@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import AnimateIn from "@/components/AnimateIn";
 import MagneticButton from "@/components/MagneticButton";
+import ServiceCard from "@/components/ServiceCard";
+import StatCounter from "@/components/StatCounter";
 import { services } from "@/data/services";
 
 export const metadata: Metadata = {
@@ -23,58 +25,33 @@ export default function ServicesPage() {
             </span>
           </>
         }
-        description="We don't hand you off between vendors. One team carries your brand from first sketch to first-page ranking."
+        description="We don't hand you off between vendors. One team carries your brand from first sketch to first-page ranking. Explore each service below."
       />
 
       <section className="py-24 lg:py-32">
-        <div className="container-px space-y-24 lg:space-y-32">
-          {services.map((service, i) => (
-            <div
-              key={service.id}
-              id={service.id}
-              className="scroll-mt-28 grid gap-10 lg:grid-cols-2 lg:gap-20"
-            >
-              <AnimateIn
-                className={i % 2 === 1 ? "lg:order-2" : ""}
-              >
-                <span className="font-[family-name:var(--font-alt)] text-6xl font-medium text-[color:var(--color-primary)]/20 lg:text-8xl">
-                  {service.number}
-                </span>
-                <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-[color:var(--color-ink)] sm:text-4xl">
-                  {service.title}
-                </h2>
-                <p className="mt-2 text-base font-medium text-[color:var(--color-primary)]">
-                  {service.tagline}
-                </p>
-                <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-[color:var(--color-ink)]/65">
-                  {service.description}
-                </p>
-              </AnimateIn>
+        <div className="container-px">
+          <AnimateIn
+            stagger
+            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            {services.map((service) => (
+              <ServiceCard key={service.id} service={service} />
+            ))}
+          </AnimateIn>
+        </div>
+      </section>
 
-              <AnimateIn
-                delay={0.1}
-                className={`rounded-3xl border border-[color:var(--color-ink)]/10 bg-[color:var(--color-mist)]/40 p-8 lg:p-10 ${
-                  i % 2 === 1 ? "lg:order-1" : ""
-                }`}
-              >
-                <p className="font-[family-name:var(--font-alt)] text-sm uppercase tracking-widest text-[color:var(--color-ink)]/40">
-                  What&apos;s included
-                </p>
-                <ul className="mt-6 space-y-4">
-                  {service.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3">
-                      <span className="mt-1.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[color:var(--color-primary)] text-[10px] text-white">
-                        ✓
-                      </span>
-                      <span className="text-[15px] text-[color:var(--color-ink)]/75">
-                        {f}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </AnimateIn>
-            </div>
-          ))}
+      <section className="bg-[color:var(--color-mist)]/50 py-20">
+        <div className="container-px">
+          <AnimateIn
+            stagger
+            className="grid grid-cols-2 gap-10 lg:grid-cols-4"
+          >
+            <StatCounter value={120} suffix="+" label="Projects delivered" />
+            <StatCounter value={98} suffix="%" label="Client retention" />
+            <StatCounter value={3} suffix=".4x" label="Avg. organic growth" />
+            <StatCounter value={8} label="Services, one team" />
+          </AnimateIn>
         </div>
       </section>
 
@@ -82,7 +59,7 @@ export default function ServicesPage() {
         <div className="noise-overlay" />
         <div className="container-px relative">
           <AnimateIn>
-            <h2 className="mx-auto max-w-2xl font-[family-name:var(--font-display)] text-3xl font-bold tracking-tight text-balance sm:text-4xl lg:text-5xl">
+            <h2 className="mx-auto max-w-2xl font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-balance sm:text-4xl lg:text-5xl">
               Not sure which services you need?
             </h2>
             <p className="mx-auto mt-5 max-w-lg text-white/65">

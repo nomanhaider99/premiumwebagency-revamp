@@ -5,10 +5,10 @@ const columns = [
   {
     title: "Services",
     links: [
-      { label: "Web Design", href: "/services#design" },
-      { label: "Development", href: "/services#development" },
-      { label: "Marketing", href: "/services#marketing" },
-      { label: "SEO", href: "/services#seo" },
+      { label: "Web Design", href: "/services/design" },
+      { label: "Development", href: "/services/development" },
+      { label: "Marketing", href: "/services/marketing" },
+      { label: "SEO", href: "/services/seo" },
     ],
   },
   {
@@ -55,7 +55,7 @@ export default function Footer() {
 
           {columns.map((col) => (
             <div key={col.title}>
-              <h4 className="text-sm font-semibold uppercase tracking-wider text-white/40">
+              <h4 className="font-[family-name:var(--font-display)] text-sm font-semibold uppercase tracking-wider text-white/40">
                 {col.title}
               </h4>
               <ul className="mt-5 space-y-3">
@@ -74,7 +74,7 @@ export default function Footer() {
           ))}
 
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-white/40">
+            <h4 className="font-[family-name:var(--font-display)] text-sm font-semibold uppercase tracking-wider text-white/40">
               Say hello
             </h4>
             <p className="mt-5 text-sm text-white/75">

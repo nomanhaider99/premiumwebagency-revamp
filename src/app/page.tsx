@@ -35,7 +35,7 @@ export default function Home() {
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
               What we do
             </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-[color:var(--color-ink)] text-balance sm:text-5xl">
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-wide text-[color:var(--color-ink)] text-balance sm:text-5xl">
               One studio. Every discipline your brand needs.
             </h2>
           </AnimateIn>
@@ -68,7 +68,7 @@ export default function Home() {
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-sky)]">
               How we work
             </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-balance sm:text-5xl">
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-wide text-balance sm:text-5xl">
               A refined process, from discovery to growth.
             </h2>
           </AnimateIn>
@@ -86,7 +86,7 @@ export default function Home() {
               <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
                 Selected work
               </span>
-              <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-[color:var(--color-ink)] text-balance sm:text-5xl">
+              <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-wide text-[color:var(--color-ink)] text-balance sm:text-5xl">
                 Recent projects we&apos;re proud of.
               </h2>
             </div>
@@ -109,7 +109,7 @@ export default function Home() {
               <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
                 Pricing
               </span>
-              <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-[color:var(--color-ink)] text-balance sm:text-5xl">
+              <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-wide text-[color:var(--color-ink)] text-balance sm:text-5xl">
                 Simple, transparent packages.
               </h2>
             </div>
@@ -131,7 +131,7 @@ export default function Home() {
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
               Client voices
             </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-[color:var(--color-ink)] text-balance sm:text-5xl">
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-wide text-[color:var(--color-ink)] text-balance sm:text-5xl">
               Trusted by teams who expect more.
             </h2>
           </AnimateIn>
@@ -176,7 +176,7 @@ export default function Home() {
             </span>
           </AnimateIn>
           <AnimateIn delay={0.1}>
-            <h2 className="mx-auto mt-5 max-w-3xl font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+            <h2 className="mx-auto mt-5 max-w-3xl font-[family-name:var(--font-display)] text-4xl font-bold tracking-wide text-balance sm:text-5xl lg:text-6xl">
               Ready to elevate your brand online?
             </h2>
           </AnimateIn>

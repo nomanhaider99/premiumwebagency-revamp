@@ -2,31 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import {
-  Palette,
-  Code2,
-  ShoppingCart,
-  Smartphone,
-  Sparkles,
-  Megaphone,
-  Search,
-  LifeBuoy,
-  ArrowRight,
-  ChevronDown,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { services } from "@/data/services";
-
-const serviceIcons: Record<string, LucideIcon> = {
-  design: Palette,
-  development: Code2,
-  ecommerce: ShoppingCart,
-  mobile: Smartphone,
-  branding: Sparkles,
-  marketing: Megaphone,
-  seo: Search,
-  support: LifeBuoy,
-};
+import { getServiceIcon } from "@/lib/service-icons";
 
 const ROW_HEIGHT = 44;
 
@@ -39,7 +17,7 @@ export default function ServicesMegaMenu({
 }) {
   const [hovered, setHovered] = useState(0);
   const current = services[hovered];
-  const Icon = serviceIcons[current.id] ?? Sparkles;
+  const Icon = getServiceIcon(current.id);
 
   return (
     <div className="group/services relative flex h-full items-center">
@@ -65,11 +43,11 @@ export default function ServicesMegaMenu({
       </Link>
 
       {/* mega menu */}
-      <div className="invisible absolute left-1/2 top-full w-[680px] -translate-x-1/2 translate-y-2 opacity-0 transition-all duration-300 ease-out group-hover/services:visible group-hover/services:translate-y-0 group-hover/services:opacity-100 group-focus-within/services:visible group-focus-within/services:translate-y-0 group-focus-within/services:opacity-100">
+      <div className="invisible absolute left-1/2 top-full w-[820px] -translate-x-1/2 translate-y-2 opacity-0 transition-all duration-300 ease-out group-hover/services:visible group-hover/services:translate-y-0 group-hover/services:opacity-100 group-focus-within/services:visible group-focus-within/services:translate-y-0 group-focus-within/services:opacity-100">
         <div className="overflow-hidden rounded-3xl border border-white/10 bg-[color:var(--color-ink)]/95 shadow-2xl shadow-black/50 backdrop-blur-2xl">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
 
-          <div className="grid grid-cols-[220px_1fr]">
+          <div className="grid grid-cols-[270px_1fr]">
             {/* left: service list with a sliding active indicator */}
             <div className="relative border-r border-white/8 p-3" onMouseLeave={() => setHovered(0)}>
               <div
@@ -78,22 +56,26 @@ export default function ServicesMegaMenu({
                 style={{ transform: `translateY(${hovered * ROW_HEIGHT}px)` }}
               />
               <ul className="relative">
-                {services.map((s, i) => (
-                  <li key={s.id}>
-                    <Link
-                      href={`/services#${s.id}`}
-                      onMouseEnter={() => setHovered(i)}
-                      className={`flex h-11 items-center justify-between rounded-xl px-3.5 text-sm transition-colors duration-200 ${
-                        hovered === i ? "text-white" : "text-white/45"
-                      }`}
-                    >
-                      <span className="font-medium">{s.title}</span>
-                      <span className="font-[family-name:var(--font-alt)] text-[10px] text-white/25">
-                        {s.number}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
+                {services.map((s, i) => {
+                  const RowIcon = getServiceIcon(s.id);
+                  return (
+                    <li key={s.id}>
+                      <Link
+                        href={`/services/${s.id}`}
+                        onMouseEnter={() => setHovered(i)}
+                        className={`flex h-11 items-center gap-3 rounded-xl px-3.5 text-sm transition-colors duration-200 ${
+                          hovered === i ? "text-white" : "text-white/45"
+                        }`}
+                      >
+                        <RowIcon className="h-4 w-4 shrink-0" strokeWidth={1.75} />
+                        <span className="flex-1 truncate font-medium">{s.title}</span>
+                        <span className="font-[family-name:var(--font-alt)] text-[10px] text-white/25">
+                          {s.number}
+                        </span>
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 
@@ -110,7 +92,7 @@ export default function ServicesMegaMenu({
               <span className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[color:var(--color-primary)] to-[color:var(--color-sky)] text-white shadow-lg shadow-black/30">
                 <Icon className="h-5 w-5" strokeWidth={1.75} />
               </span>
-              <h3 className="relative mt-5 font-[family-name:var(--font-display)] text-2xl font-semibold text-white">
+              <h3 className="relative mt-5 font-[family-name:var(--font-display)] text-2xl font-semibold tracking-wide text-white">
                 {current.title}
               </h3>
               <p className="relative mt-1 text-sm font-medium text-[color:var(--color-sky)]">
@@ -120,7 +102,7 @@ export default function ServicesMegaMenu({
                 {current.description}
               </p>
               <Link
-                href={`/services#${current.id}`}
+                href={`/services/${current.id}`}
                 className="relative mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-white transition-transform hover:translate-x-0.5"
               >
                 Explore service
