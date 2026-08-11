@@ -31,7 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={cn("h-full", "antialiased", michroma.variable, quicksand.variable)}
     >
-      <body className="min-h-full flex flex-col bg-white text-[color:var(--color-ink)]">
+      <body className="min-h-full flex flex-col bg-[color:var(--color-ink)] text-white">
         <Preloader />
         <SmoothScrollProvider>
           <Navbar />

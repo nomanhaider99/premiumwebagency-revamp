@@ -53,10 +53,10 @@ export default function AboutPage() {
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
               Our story
             </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-[color:var(--color-ink)] sm:text-4xl">
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-white sm:text-4xl">
               We started this studio because most agencies make you choose.
             </h2>
-            <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-[color:var(--color-ink)]/65">
+            <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-white/65">
               <p>
                 Design shops that ignore performance. Dev shops that ignore
                 brand. Marketing agencies that inherit a site they had no
@@ -81,13 +81,13 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-[color:var(--color-mist)]/50 py-24 lg:py-32">
+      <section className="bg-[color:var(--color-surface)]/50 py-24 lg:py-32">
         <div className="container-px">
           <AnimateIn className="max-w-2xl">
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
               What we believe
             </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-[color:var(--color-ink)] sm:text-4xl">
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-white sm:text-4xl">
               The principles behind every project.
             </h2>
           </AnimateIn>
@@ -96,15 +96,15 @@ export default function AboutPage() {
             {values.map((v, i) => (
               <div
                 key={v.title}
-                className="rounded-3xl border border-[color:var(--color-ink)]/10 bg-white p-8"
+                className="rounded-3xl border border-white/10 bg-white/[0.03] p-8"
               >
-                <span className="font-[family-name:var(--font-alt)] text-sm text-[color:var(--color-ink)]/35">
+                <span className="font-[family-name:var(--font-alt)] text-sm text-white/35">
                   0{i + 1}
                 </span>
-                <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl font-semibold tracking-wide text-[color:var(--color-ink)]">
+                <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl font-semibold tracking-wide text-white">
                   {v.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-[color:var(--color-ink)]/60">
+                <p className="mt-2 text-sm leading-relaxed text-white/60">
                   {v.description}
                 </p>
               </div>

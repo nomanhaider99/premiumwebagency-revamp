@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 import MagneticButton from "@/components/MagneticButton";
-import HeroScene from "@/components/HeroScene";
+import HeroCodeWindow from "@/components/HeroCodeWindow";
 
 export default function Hero() {
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -76,8 +76,8 @@ export default function Hero() {
         }}
       />
 
-      {/* ambient 3D glass shape, floating behind the copy on the right */}
-      <HeroScene className="pointer-events-none absolute right-[-6%] top-1/2 hidden h-[720px] w-[720px] -translate-y-1/2 opacity-95 md:block lg:right-[2%]" />
+      {/* floating code editor window, behind the copy on the right */}
+      <HeroCodeWindow className="pointer-events-none absolute right-[-2%] top-1/2 hidden -translate-y-1/2 opacity-95 md:block lg:right-[6%]" />
 
       <div className="container-px relative z-10">
         <span className="hero-eyebrow inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-4 py-1.5 font-[family-name:var(--font-alt)] text-sm text-white/70">

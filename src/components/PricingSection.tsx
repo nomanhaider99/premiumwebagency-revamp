@@ -17,12 +17,12 @@ export default function PricingSection() {
   return (
     <div>
       <Tabs value={category} onValueChange={(v) => setCategory(v as PricingCategory)}>
-        <TabsList className="h-auto flex-wrap justify-start gap-2 rounded-full border border-[color:var(--color-ink)]/10 bg-[color:var(--color-mist)]/60 p-1.5">
+        <TabsList className="h-auto flex-wrap justify-start gap-2 rounded-full border border-white/10 bg-white/5 p-1.5">
           {pricingCategories.map((cat) => (
             <TabsTrigger
               key={cat}
               value={cat}
-              className="rounded-full px-4 py-2 text-sm font-medium text-[color:var(--color-ink)]/60 data-active:bg-[color:var(--color-ink)] data-active:text-white data-active:shadow-none"
+              className="rounded-full px-4 py-2 text-sm font-medium text-white/60 data-active:bg-white data-active:text-[color:var(--color-ink)] data-active:shadow-none"
             >
               {cat}
             </TabsTrigger>
@@ -32,16 +32,16 @@ export default function PricingSection() {
 
       <div className="mt-8 flex justify-center">
         <Tabs value={cycle} onValueChange={(v) => setCycle(v as Cycle)}>
-          <TabsList className="h-auto rounded-full border border-[color:var(--color-ink)]/10 bg-[color:var(--color-mist)]/60 p-1">
+          <TabsList className="h-auto rounded-full border border-white/10 bg-white/5 p-1">
             <TabsTrigger
               value="monthly"
-              className="rounded-full px-5 py-2 text-sm font-medium text-[color:var(--color-ink)]/60 data-active:bg-[color:var(--color-ink)] data-active:text-white data-active:shadow-none"
+              className="rounded-full px-5 py-2 text-sm font-medium text-white/60 data-active:bg-white data-active:text-[color:var(--color-ink)] data-active:shadow-none"
             >
               Monthly
             </TabsTrigger>
             <TabsTrigger
               value="yearly"
-              className="rounded-full px-5 py-2 text-sm font-medium text-[color:var(--color-ink)]/60 data-active:bg-[color:var(--color-ink)] data-active:text-white data-active:shadow-none"
+              className="rounded-full px-5 py-2 text-sm font-medium text-white/60 data-active:bg-white data-active:text-[color:var(--color-ink)] data-active:shadow-none"
             >
               Yearly
               <span className="ml-1.5 rounded-full bg-[color:var(--color-primary)]/15 px-1.5 py-0.5 text-[11px] font-semibold text-[color:var(--color-primary)]">
@@ -60,8 +60,8 @@ export default function PricingSection() {
               key={plan.id}
               className={`relative flex h-full flex-col rounded-3xl border p-8 transition-all duration-500 ${
                 plan.featured
-                  ? "border-transparent bg-[color:var(--color-ink)] text-white shadow-2xl shadow-[color:var(--color-primary)]/20 lg:-translate-y-4"
-                  : "border-[color:var(--color-ink)]/10 bg-white text-[color:var(--color-ink)] hover:-translate-y-1 hover:shadow-xl hover:shadow-[color:var(--color-primary)]/10"
+                  ? "border-[color:var(--color-primary)]/30 bg-[color:var(--color-surface)] text-white shadow-2xl shadow-[color:var(--color-primary)]/20 lg:-translate-y-4"
+                  : "border-white/10 bg-white/[0.03] text-white hover:-translate-y-1 hover:shadow-xl hover:shadow-[color:var(--color-primary)]/10"
               }`}
             >
               {plan.featured && (
@@ -70,45 +70,27 @@ export default function PricingSection() {
                 </Badge>
               )}
 
-              <h3
-                className={`font-[family-name:var(--font-display)] text-xl font-semibold ${
-                  plan.featured ? "text-white" : "text-[color:var(--color-ink)]"
-                }`}
-              >
+              <h3 className="font-[family-name:var(--font-display)] text-xl font-semibold text-white">
                 {plan.name}
               </h3>
-              <p
-                className={`mt-1.5 text-sm ${
-                  plan.featured ? "text-white/60" : "text-[color:var(--color-ink)]/55"
-                }`}
-              >
+              <p className="mt-1.5 text-sm text-white/60">
                 {plan.tagline}
               </p>
 
               <div className="mt-6 flex items-end gap-1.5">
-                <span className="font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight">
+                <span className="font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-white">
                   ${price.toLocaleString()}
                 </span>
-                <span
-                  className={`pb-1.5 text-sm ${
-                    plan.featured ? "text-white/50" : "text-[color:var(--color-ink)]/50"
-                  }`}
-                >
+                <span className="pb-1.5 text-sm text-white/50">
                   /mo
                 </span>
               </div>
 
-              <ul
-                className={`mt-8 flex-1 space-y-3 border-t pt-6 ${
-                  plan.featured ? "border-white/15" : "border-[color:var(--color-ink)]/10"
-                }`}
-              >
+              <ul className="mt-8 flex-1 space-y-3 border-t border-white/15 pt-6">
                 {plan.features.map((f) => (
                   <li
                     key={f}
-                    className={`flex items-start gap-2.5 text-sm ${
-                      plan.featured ? "text-white/75" : "text-[color:var(--color-ink)]/70"
-                    }`}
+                    className="flex items-start gap-2.5 text-sm text-white/75"
                   >
                     <span
                       className={`mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full ${

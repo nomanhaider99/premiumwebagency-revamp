@@ -38,10 +38,10 @@ export default function ContactPage() {
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
               Get in touch
             </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-[color:var(--color-ink)] sm:text-4xl">
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-white sm:text-4xl">
               Direct access to the team building your site.
             </h2>
-            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[color:var(--color-ink)]/65">
+            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/65">
               No account managers, no hand-offs — you&apos;ll work directly
               with the designers and engineers on your project from day one.
             </p>
@@ -49,18 +49,18 @@ export default function ContactPage() {
             <div className="mt-10 space-y-6">
               {info.map((item) => (
                 <div key={item.label}>
-                  <p className="text-xs uppercase tracking-widest text-[color:var(--color-ink)]/40">
+                  <p className="text-xs uppercase tracking-widest text-white/40">
                     {item.label}
                   </p>
                   {item.href ? (
                     <a
                       href={item.href}
-                      className="mt-1 block font-[family-name:var(--font-alt)] text-lg text-[color:var(--color-ink)] hover:text-[color:var(--color-primary)] transition-colors"
+                      className="mt-1 block font-[family-name:var(--font-alt)] text-lg text-white hover:text-[color:var(--color-primary)] transition-colors"
                     >
                       {item.value}
                     </a>
                   ) : (
-                    <p className="mt-1 font-[family-name:var(--font-alt)] text-lg text-[color:var(--color-ink)]">
+                    <p className="mt-1 font-[family-name:var(--font-alt)] text-lg text-white">
                       {item.value}
                     </p>
                   )}
@@ -71,7 +71,7 @@ export default function ContactPage() {
 
           <AnimateIn
             delay={0.1}
-            className="rounded-3xl border border-[color:var(--color-ink)]/10 bg-[color:var(--color-mist)]/40 p-8 lg:p-10"
+            className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 lg:p-10"
           >
             <ContactForm />
           </AnimateIn>

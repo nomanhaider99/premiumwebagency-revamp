@@ -41,7 +41,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="bg-[color:var(--color-mist)]/50 py-20">
+      <section className="bg-[color:var(--color-surface)]/50 py-20">
         <div className="container-px">
           <AnimateIn
             stagger

@@ -46,11 +46,11 @@ export default function StatCounter({
     <div>
       <span
         ref={numRef}
-        className="font-[family-name:var(--font-alt)] text-5xl font-semibold tracking-tight text-[color:var(--color-ink)] lg:text-6xl"
+        className="font-[family-name:var(--font-alt)] text-5xl font-semibold tracking-tight text-white lg:text-6xl"
       >
         {prefix}0{suffix}
       </span>
-      <p className="mt-2 text-sm text-[color:var(--color-ink)]/60">{label}</p>
+      <p className="mt-2 text-sm text-white/60">{label}</p>
     </div>
   );
 }

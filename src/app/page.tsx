@@ -16,7 +16,7 @@ export default function Home() {
     <>
       <Hero />
 
-      <section className="border-y border-[color:var(--color-ink)]/8 bg-white py-10">
+      <section className="border-y border-white/8 py-10">
         <Marquee
           items={[
             "UI/UX DESIGN",
@@ -29,13 +29,13 @@ export default function Home() {
         />
       </section>
 
-      <section id="services" className="bg-[color:var(--color-mist)]/50 py-28 lg:py-36">
+      <section id="services" className="bg-[color:var(--color-surface)]/50 py-28 lg:py-36">
         <div className="container-px">
           <AnimateIn className="max-w-2xl">
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
               What we do
             </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-wide text-[color:var(--color-ink)] text-balance sm:text-5xl">
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-wide text-white text-balance sm:text-5xl">
               One studio. Every discipline your brand needs.
             </h2>
           </AnimateIn>
@@ -48,11 +48,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white py-24">
+      <section className="py-24">
         <div className="container-px">
           <AnimateIn
             stagger
-            className="grid grid-cols-2 gap-10 border-t border-[color:var(--color-ink)]/10 pt-16 lg:grid-cols-4"
+            className="grid grid-cols-2 gap-10 border-t border-white/10 pt-16 lg:grid-cols-4"
           >
             <StatCounter value={120} suffix="+" label="Projects delivered" />
             <StatCounter value={98} suffix="%" label="Client retention" />
@@ -79,14 +79,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white py-28 lg:py-36">
+      <section className="py-28 lg:py-36">
         <div className="container-px">
           <AnimateIn className="flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-xl">
               <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
                 Selected work
               </span>
-              <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-wide text-[color:var(--color-ink)] text-balance sm:text-5xl">
+              <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-wide text-white text-balance sm:text-5xl">
                 Recent projects we&apos;re proud of.
               </h2>
             </div>
@@ -102,14 +102,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="pricing" className="bg-[color:var(--color-mist)]/50 py-28 lg:py-36">
+      <section id="pricing" className="bg-[color:var(--color-surface)]/50 py-28 lg:py-36">
         <div className="container-px">
           <AnimateIn className="flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-xl">
               <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
                 Pricing
               </span>
-              <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-wide text-[color:var(--color-ink)] text-balance sm:text-5xl">
+              <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-wide text-white text-balance sm:text-5xl">
                 Simple, transparent packages.
               </h2>
             </div>
@@ -125,13 +125,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white py-28 lg:py-36">
+      <section className="py-28 lg:py-36">
         <div className="container-px">
           <AnimateIn className="max-w-2xl">
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
               Client voices
             </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-wide text-[color:var(--color-ink)] text-balance sm:text-5xl">
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-4xl font-bold tracking-wide text-white text-balance sm:text-5xl">
               Trusted by teams who expect more.
             </h2>
           </AnimateIn>
@@ -140,19 +140,19 @@ export default function Home() {
             {testimonials.map((t) => (
               <div
                 key={t.name}
-                className="flex h-full flex-col rounded-3xl border border-[color:var(--color-ink)]/10 bg-white p-8"
+                className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-8"
               >
                 <p className="font-[family-name:var(--font-alt)] text-3xl leading-none text-[color:var(--color-primary)]">
                   &ldquo;
                 </p>
-                <p className="mt-2 flex-1 text-[15px] leading-relaxed text-[color:var(--color-ink)]/75">
+                <p className="mt-2 flex-1 text-[15px] leading-relaxed text-white/75">
                   {t.quote}
                 </p>
-                <div className="mt-6 border-t border-[color:var(--color-ink)]/10 pt-4">
-                  <p className="text-sm font-semibold text-[color:var(--color-ink)]">
+                <div className="mt-6 border-t border-white/10 pt-4">
+                  <p className="text-sm font-semibold text-white">
                     {t.name}
                   </p>
-                  <p className="text-xs text-[color:var(--color-ink)]/50">{t.role}</p>
+                  <p className="text-xs text-white/50">{t.role}</p>
                 </div>
               </div>
             ))}

@@ -9,10 +9,8 @@ import { getServiceIcon } from "@/lib/service-icons";
 const ROW_HEIGHT = 44;
 
 export default function ServicesMegaMenu({
-  scrolled,
   active,
 }: {
-  scrolled: boolean;
   active: boolean;
 }) {
   const [hovered, setHovered] = useState(0);
@@ -24,13 +22,7 @@ export default function ServicesMegaMenu({
       <Link
         href="/services"
         className={`relative flex items-center gap-1 text-sm font-medium transition-colors group ${
-          scrolled
-            ? active
-              ? "text-[color:var(--color-ink)]"
-              : "text-[color:var(--color-ink)]/60 hover:text-[color:var(--color-ink)]"
-            : active
-              ? "text-white"
-              : "text-white/70 hover:text-white"
+          active ? "text-white" : "text-white/70 hover:text-white"
         }`}
       >
         Services

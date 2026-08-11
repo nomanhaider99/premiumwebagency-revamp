@@ -32,7 +32,7 @@ export default function PricingPage() {
           </AnimateIn>
 
           <AnimateIn className="mt-16 text-center">
-            <p className="text-sm text-[color:var(--color-ink)]/50">
+            <p className="text-sm text-white/50">
               Need something bespoke?{" "}
               <a
                 href="/contact"

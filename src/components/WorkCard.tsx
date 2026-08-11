@@ -20,15 +20,15 @@ export default function WorkCard({ project }: { project: Project }) {
 
       <div className="mt-5 flex items-start justify-between gap-4">
         <div>
-          <h3 className="font-[family-name:var(--font-display)] text-xl font-semibold tracking-wide text-[color:var(--color-ink)]">
+          <h3 className="font-[family-name:var(--font-display)] text-xl font-semibold tracking-wide text-white">
             {project.name}
           </h3>
-          <p className="mt-1 text-sm text-[color:var(--color-ink)]/55">
+          <p className="mt-1 text-sm text-white/55">
             {project.category}
           </p>
         </div>
       </div>
-      <p className="mt-3 text-sm leading-relaxed text-[color:var(--color-ink)]/60">
+      <p className="mt-3 text-sm leading-relaxed text-white/60">
         {project.description}
       </p>
     </div>

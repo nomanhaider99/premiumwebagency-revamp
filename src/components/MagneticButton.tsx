@@ -41,9 +41,9 @@ export default function MagneticButton({
 
   const styles = {
     solid:
-      "bg-[color:var(--color-ink)] text-white hover:bg-[color:var(--color-primary)] hover:shadow-lg hover:shadow-[color:var(--color-primary)]/30",
+      "bg-[color:var(--color-primary)] text-white hover:bg-[color:var(--color-sky)] hover:shadow-lg hover:shadow-[color:var(--color-primary)]/30",
     outline:
-      "border border-[color:var(--color-ink)]/20 text-[color:var(--color-ink)] hover:border-[color:var(--color-primary)] hover:text-[color:var(--color-primary)]",
+      "border border-white/20 text-white hover:border-[color:var(--color-primary)] hover:text-[color:var(--color-primary)]",
     light:
       "bg-white text-[color:var(--color-ink)] hover:bg-[color:var(--color-sky)]",
   };

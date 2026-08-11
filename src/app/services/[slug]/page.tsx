@@ -115,7 +115,7 @@ export default async function ServiceDetailPage(
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
               What&apos;s included
             </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-[color:var(--color-ink)] text-balance sm:text-4xl">
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-white text-balance sm:text-4xl">
               Everything you need, none of the handoffs.
             </h2>
           </AnimateIn>
@@ -127,12 +127,12 @@ export default async function ServiceDetailPage(
             {service.features.map((feature, i) => (
               <div
                 key={feature}
-                className="flex items-start gap-4 rounded-2xl border border-[color:var(--color-ink)]/10 bg-[color:var(--color-mist)]/40 p-6"
+                className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-6"
               >
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[color:var(--color-primary)] text-sm font-semibold text-white">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <p className="pt-1 text-[15px] font-medium leading-snug text-[color:var(--color-ink)]/80">
+                <p className="pt-1 text-[15px] font-medium leading-snug text-white/80">
                   {feature}
                 </p>
               </div>
@@ -142,14 +142,14 @@ export default async function ServiceDetailPage(
       </section>
 
       {relatedProjects.length > 0 && (
-        <section className="bg-[color:var(--color-mist)]/50 py-24 lg:py-32">
+        <section className="bg-[color:var(--color-surface)]/50 py-24 lg:py-32">
           <div className="container-px">
             <AnimateIn className="flex flex-wrap items-end justify-between gap-6">
               <div className="max-w-xl">
                 <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
                   Related work
                 </span>
-                <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-[color:var(--color-ink)] text-balance sm:text-4xl">
+                <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-white text-balance sm:text-4xl">
                   {service.title} projects we&apos;ve shipped.
                 </h2>
               </div>
@@ -177,7 +177,7 @@ export default async function ServiceDetailPage(
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
               FAQ
             </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-[color:var(--color-ink)] text-balance sm:text-4xl">
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-white text-balance sm:text-4xl">
               Common questions about {service.title.toLowerCase()}.
             </h2>
           </AnimateIn>
@@ -188,13 +188,13 @@ export default async function ServiceDetailPage(
         </div>
       </section>
 
-      <section className="bg-[color:var(--color-mist)]/50 py-24 lg:py-32">
+      <section className="bg-[color:var(--color-surface)]/50 py-24 lg:py-32">
         <div className="container-px">
           <AnimateIn className="max-w-2xl">
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
               Explore more
             </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-[color:var(--color-ink)] text-balance sm:text-4xl">
+            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-white text-balance sm:text-4xl">
               Other services that pair well.
             </h2>
           </AnimateIn>

@@ -63,7 +63,7 @@ export default function Navbar() {
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/85 backdrop-blur-md shadow-[0_1px_0_0_rgba(5,55,66,0.08)]"
+          ? "bg-[color:var(--color-ink)]/85 backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.2)]"
           : "bg-transparent"
       }`}
     >
@@ -87,7 +87,7 @@ export default function Navbar() {
 
             if (link.href === "/services") {
               return (
-                <ServicesMegaMenu key={link.href} scrolled={scrolled} active={active} />
+                <ServicesMegaMenu key={link.href} active={active} />
               );
             }
 
@@ -96,13 +96,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`relative text-sm font-medium transition-colors group ${
-                  scrolled
-                    ? active
-                      ? "text-[color:var(--color-ink)]"
-                      : "text-[color:var(--color-ink)]/60 hover:text-[color:var(--color-ink)]"
-                    : active
-                      ? "text-white"
-                      : "text-white/70 hover:text-white"
+                  active ? "text-white" : "text-white/70 hover:text-white"
                 }`}
               >
                 {link.label}
@@ -119,11 +113,7 @@ export default function Navbar() {
         <div className="hidden md:block">
           <Link
             href="/contact"
-            className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all hover:shadow-lg hover:shadow-[color:var(--color-primary)]/30 ${
-              scrolled
-                ? "bg-[color:var(--color-ink)] text-white hover:bg-[color:var(--color-primary)]"
-                : "bg-white text-[color:var(--color-ink)] hover:bg-[color:var(--color-sky)]"
-            }`}
+            className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-[color:var(--color-ink)] transition-all hover:bg-[color:var(--color-sky)] hover:shadow-lg hover:shadow-[color:var(--color-primary)]/30"
           >
             Start a project
           </Link>
@@ -135,40 +125,40 @@ export default function Navbar() {
           className="md:hidden relative h-10 w-10 flex flex-col items-center justify-center gap-1.5"
         >
           <span
-            className={`block h-0.5 w-6 transition-transform duration-300 ${
-              scrolled ? "bg-[color:var(--color-ink)]" : "bg-white"
-            } ${open ? "translate-y-2 rotate-45" : ""}`}
+            className={`block h-0.5 w-6 bg-white transition-transform duration-300 ${
+              open ? "translate-y-2 rotate-45" : ""
+            }`}
           />
           <span
-            className={`block h-0.5 w-6 transition-opacity duration-300 ${
-              scrolled ? "bg-[color:var(--color-ink)]" : "bg-white"
-            } ${open ? "opacity-0" : "opacity-100"}`}
+            className={`block h-0.5 w-6 bg-white transition-opacity duration-300 ${
+              open ? "opacity-0" : "opacity-100"
+            }`}
           />
           <span
-            className={`block h-0.5 w-6 transition-transform duration-300 ${
-              scrolled ? "bg-[color:var(--color-ink)]" : "bg-white"
-            } ${open ? "-translate-y-2 -rotate-45" : ""}`}
+            className={`block h-0.5 w-6 bg-white transition-transform duration-300 ${
+              open ? "-translate-y-2 -rotate-45" : ""
+            }`}
           />
         </button>
       </nav>
 
       <div
         ref={menuRef}
-        className="md:hidden hidden flex-col gap-1 bg-white/95 backdrop-blur-md px-6 pb-6 pt-2 shadow-lg"
+        className="md:hidden hidden flex-col gap-1 bg-[color:var(--color-ink)]/95 backdrop-blur-md px-6 pb-6 pt-2 shadow-lg"
         style={{ display: "none" }}
       >
         {links.map((link) => (
           <Link
             key={link.href}
             href={link.href}
-            className="py-3 text-base font-medium text-[color:var(--color-ink)] border-b border-[color:var(--color-mist)] last:border-none"
+            className="py-3 text-base font-medium text-white border-b border-white/10 last:border-none"
           >
             {link.label}
           </Link>
         ))}
         <Link
           href="/contact"
-          className="mt-4 inline-flex items-center justify-center rounded-full bg-[color:var(--color-ink)] px-5 py-3 text-sm font-medium text-white"
+          className="mt-4 inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-medium text-[color:var(--color-ink)]"
         >
           Start a project
         </Link>

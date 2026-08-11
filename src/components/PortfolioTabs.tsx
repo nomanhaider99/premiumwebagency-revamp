@@ -30,12 +30,12 @@ export default function PortfolioTabs({ projects }: { projects: Project[] }) {
   return (
     <div>
       <Tabs value={active} onValueChange={(v) => setActive(v as ProjectTag | "All")}>
-        <TabsList className="h-auto flex-wrap justify-start gap-2 rounded-full border border-[color:var(--color-ink)]/10 bg-[color:var(--color-mist)]/60 p-1.5">
+        <TabsList className="h-auto flex-wrap justify-start gap-2 rounded-full border border-white/10 bg-white/5 p-1.5">
           {categories.map((cat) => (
             <TabsTrigger
               key={cat}
               value={cat}
-              className="rounded-full px-4 py-2 text-sm font-medium text-[color:var(--color-ink)]/60 data-active:bg-[color:var(--color-ink)] data-active:text-white data-active:shadow-none"
+              className="rounded-full px-4 py-2 text-sm font-medium text-white/60 data-active:bg-white data-active:text-[color:var(--color-ink)] data-active:shadow-none"
             >
               {cat}
             </TabsTrigger>
@@ -54,7 +54,7 @@ export default function PortfolioTabs({ projects }: { projects: Project[] }) {
       </AnimateIn>
 
       {filtered.length === 0 && (
-        <p className="mt-14 text-center text-sm text-[color:var(--color-ink)]/50">
+        <p className="mt-14 text-center text-sm text-white/50">
           No projects in this category yet.
         </p>
       )}
