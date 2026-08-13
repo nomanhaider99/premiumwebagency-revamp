@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "@/lib/gsap";
 
 type Token = { text: string; cls?: string };
@@ -47,10 +47,63 @@ const CODE_LINES: Token[][] = [
   [{ text: "}", cls: dim }],
 ];
 
-const CURSOR_LINE = 8;
+const TYPE_SPEED_MS = 26;
+const LOOP_PAUSE_MS = 2600;
+
+const LINE_WEIGHTS = CODE_LINES.map((line) =>
+  Math.max(
+    1,
+    line.reduce((sum, token) => sum + token.text.length, 0)
+  )
+);
+const LINE_STARTS = LINE_WEIGHTS.reduce<number[]>((acc, _weight, i) => {
+  acc.push(i === 0 ? 0 : acc[i - 1] + LINE_WEIGHTS[i - 1]);
+  return acc;
+}, []);
+const TOTAL_CHARS = LINE_WEIGHTS.reduce((a, b) => a + b, 0);
 
 export default function HeroCodeWindow({ className = "" }: { className?: string }) {
   const windowRef = useRef<HTMLDivElement | null>(null);
+  const [typedCount, setTypedCount] = useState(0);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) {
+      setTypedCount(TOTAL_CHARS);
+      return;
+    }
+
+    let cancelled = false;
+    let timeoutId: ReturnType<typeof setTimeout>;
+
+    const typeLoop = (count: number) => {
+      if (cancelled) return;
+      if (count >= TOTAL_CHARS) {
+        setTypedCount(TOTAL_CHARS);
+        timeoutId = setTimeout(() => typeLoop(0), LOOP_PAUSE_MS);
+        return;
+      }
+      setTypedCount(count);
+      timeoutId = setTimeout(() => typeLoop(count + 1), TYPE_SPEED_MS);
+    };
+
+    timeoutId = setTimeout(() => typeLoop(0), 900);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+  const activeLine = useMemo(() => {
+    if (typedCount >= TOTAL_CHARS) return CODE_LINES.length - 1;
+    for (let i = CODE_LINES.length - 1; i >= 0; i--) {
+      if (typedCount >= LINE_STARTS[i]) return i;
+    }
+    return 0;
+  }, [typedCount]);
 
   useEffect(() => {
     const el = windowRef.current;
@@ -123,24 +176,37 @@ export default function HeroCodeWindow({ className = "" }: { className?: string 
               ))}
             </div>
             <div className="flex-1">
-              {CODE_LINES.map((line, i) => (
-                <div key={i} className="whitespace-pre">
-                  {line.length === 0 ? (
-                    " "
-                  ) : (
-                    <>
-                      {line.map((token, j) => (
-                        <span key={j} className={token.cls}>
-                          {token.text}
-                        </span>
-                      ))}
-                      {i === CURSOR_LINE && (
-                        <span className="ml-0.5 inline-block h-[14px] w-[7px] translate-y-[2px] animate-pulse bg-[color:var(--color-primary)]" />
-                      )}
-                    </>
-                  )}
-                </div>
-              ))}
+              {CODE_LINES.map((line, i) => {
+                const localTyped = Math.max(0, typedCount - LINE_STARTS[i]);
+                let consumed = 0;
+
+                return (
+                  <div key={i} className="whitespace-pre">
+                    {line.length === 0 ? (
+                      " "
+                    ) : (
+                      <>
+                        {line.map((token, j) => {
+                          const visible = Math.max(
+                            0,
+                            Math.min(localTyped - consumed, token.text.length)
+                          );
+                          consumed += token.text.length;
+                          if (visible <= 0) return null;
+                          return (
+                            <span key={j} className={token.cls}>
+                              {token.text.slice(0, visible)}
+                            </span>
+                          );
+                        })}
+                        {i === activeLine && (
+                          <span className="ml-0.5 inline-block h-[14px] w-[7px] translate-y-[2px] animate-pulse bg-[color:var(--color-primary)]" />
+                        )}
+                      </>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
