@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { gsap } from "@/lib/gsap";
 
 export default function Preloader() {
@@ -106,22 +105,26 @@ export default function Preloader() {
         ref={contentRef}
         className="relative flex flex-col items-center"
       >
-        <div ref={markRef} className="rounded-2xl bg-white px-4 py-2 shadow-lg shadow-black/30">
-          <Image
-            src="/logo.webp"
-            alt="Premium Web Agency"
-            width={180}
-            height={61}
-            priority
-            className="h-8 w-auto"
-          />
-        </div>
-
-        <div className="mt-10 flex items-baseline gap-1 font-[family-name:var(--font-display)] text-white">
-          <span ref={numRef} className="text-6xl font-bold tracking-wide sm:text-7xl">
-            0
+        <div className="relative flex items-center justify-center">
+          <span
+            ref={markRef}
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-[family-name:var(--font-display)] text-[clamp(2.25rem,9vw,4.5rem)] font-bold tracking-[0.08em] text-white/20"
+            style={{
+              WebkitMaskImage:
+                "radial-gradient(circle 100px at center, transparent 0px, transparent 100px, black 190px)",
+              maskImage:
+                "radial-gradient(circle 100px at center, transparent 0px, transparent 100px, black 190px)",
+            }}
+          >
+            premium<span className="text-[color:var(--color-primary)]/30">web</span>agency
           </span>
-          <span className="text-2xl font-bold text-white/40 sm:text-3xl">%</span>
+
+          <div className="relative z-10 flex items-baseline gap-1 font-[family-name:var(--font-display)] text-white">
+            <span ref={numRef} className="text-6xl font-bold tracking-wide sm:text-7xl">
+              0
+            </span>
+            <span className="text-2xl font-bold text-white/40 sm:text-3xl">%</span>
+          </div>
         </div>
 
         <div className="relative mt-6 h-px w-48 overflow-hidden rounded-full bg-white/10 sm:w-60">

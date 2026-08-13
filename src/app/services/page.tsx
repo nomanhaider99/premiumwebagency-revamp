@@ -28,7 +28,7 @@ export default function ServicesPage() {
         description="We don't hand you off between vendors. One team carries your brand from first sketch to first-page ranking. Explore each service below."
       />
 
-      <section className="py-24 lg:py-32">
+      <section className="py-16 lg:py-24">
         <div className="container-px">
           <AnimateIn
             stagger
@@ -41,7 +41,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="bg-[color:var(--color-surface)]/50 py-20">
+      <section className="bg-[color:var(--color-surface)]/50 py-16">
         <div className="container-px">
           <AnimateIn
             stagger
@@ -55,7 +55,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[color:var(--color-ink)] py-24 text-center text-white lg:py-32">
+      <section className="relative overflow-hidden bg-[color:var(--color-ink)] py-16 text-center text-white lg:py-24">
         <div className="noise-overlay" />
         <div className="container-px relative">
           <AnimateIn>

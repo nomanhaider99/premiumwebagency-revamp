@@ -1,10 +1,11 @@
 import type { Project } from "@/data/projects";
+import TiltCard from "@/components/TiltCard";
 
 export default function WorkCard({ project }: { project: Project }) {
   return (
     <div className="group cursor-pointer">
-      <div
-        className={`relative h-72 overflow-hidden rounded-3xl bg-gradient-to-br ${project.gradient} transition-transform duration-700 ease-out group-hover:scale-[1.02]`}
+      <TiltCard
+        className={`h-72 overflow-hidden rounded-3xl bg-gradient-to-br ${project.gradient}`}
       >
         <div className="noise-overlay" />
         <div className="absolute inset-0 flex items-end justify-between p-7">
@@ -16,7 +17,7 @@ export default function WorkCard({ project }: { project: Project }) {
           </span>
         </div>
         <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/10" />
-      </div>
+      </TiltCard>
 
       <div className="mt-5 flex items-start justify-between gap-4">
         <div>

@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Preloader from "@/components/Preloader";
 import SmoothScrollProvider from "@/components/SmoothScrollProvider";
+import ParticleField from "@/components/ParticleField";
 import { cn } from "@/lib/utils";
 
 const michroma = Michroma({
@@ -33,9 +34,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col bg-[color:var(--color-ink)] text-white">
         <Preloader />
+        <ParticleField />
         <SmoothScrollProvider>
           <Navbar />
-          <main className="flex-1">{children}</main>
+          <main className="relative z-10 flex-1">{children}</main>
           <Footer />
         </SmoothScrollProvider>
       </body>

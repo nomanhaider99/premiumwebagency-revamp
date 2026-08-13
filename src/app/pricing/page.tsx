@@ -25,7 +25,7 @@ export default function PricingPage() {
         description="Transparent packages for brands that want premium design, development, and growth — no hidden scope, no surprises."
       />
 
-      <section className="py-24 lg:py-32">
+      <section className="py-16 lg:py-24">
         <div className="container-px">
           <AnimateIn>
             <PricingSection />
@@ -46,7 +46,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[color:var(--color-ink)] py-24 text-center text-white lg:py-32">
+      <section className="relative overflow-hidden bg-[color:var(--color-ink)] py-16 text-center text-white lg:py-24">
         <div className="noise-overlay" />
         <div className="container-px relative">
           <AnimateIn>

@@ -21,8 +21,10 @@ export default function ServicesMegaMenu({
     <div className="group/services relative flex h-full items-center">
       <Link
         href="/services"
-        className={`relative flex items-center gap-1 text-sm font-medium transition-colors group ${
-          active ? "text-white" : "text-white/70 hover:text-white"
+        className={`relative flex items-center gap-1 text-sm font-semibold transition-colors group ${
+          active
+            ? "text-[color:var(--color-ink)]"
+            : "text-[color:var(--color-ink)]/80 hover:text-[color:var(--color-ink)]"
         }`}
       >
         Services
@@ -36,7 +38,7 @@ export default function ServicesMegaMenu({
 
       {/* mega menu */}
       <div className="invisible absolute left-1/2 top-full w-[820px] -translate-x-1/2 translate-y-2 opacity-0 transition-all duration-300 ease-out group-hover/services:visible group-hover/services:translate-y-0 group-hover/services:opacity-100 group-focus-within/services:visible group-focus-within/services:translate-y-0 group-focus-within/services:opacity-100">
-        <div className="overflow-hidden rounded-3xl border border-white/10 bg-[color:var(--color-ink)]/95 shadow-2xl shadow-black/50 backdrop-blur-2xl">
+        <div className="overflow-hidden rounded-3xl border border-white/10 bg-[color:var(--color-ink)] shadow-2xl shadow-black/50">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
 
           <div className="grid grid-cols-[270px_1fr]">

@@ -57,7 +57,7 @@ export default function Hero() {
   return (
     <section
       ref={rootRef}
-      className="relative overflow-hidden bg-[color:var(--color-ink)] pt-40 pb-28 text-white lg:pt-48 lg:pb-32"
+      className="relative overflow-hidden bg-[color:var(--color-ink)] pt-40 pb-20 text-white lg:pt-48 lg:pb-24"
     >
       <div className="noise-overlay" />
 

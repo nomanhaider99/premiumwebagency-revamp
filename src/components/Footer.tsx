@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import AnimateIn from "@/components/AnimateIn";
 
 const columns = [
   {
@@ -26,8 +27,8 @@ export default function Footer() {
   return (
     <footer className="relative overflow-hidden bg-[color:var(--color-ink)] text-white">
       <div className="noise-overlay" />
-      <div className="container-px relative py-20">
-        <div className="grid gap-14 lg:grid-cols-[1.4fr_0.8fr_0.8fr_1fr]">
+      <div className="container-px relative py-16">
+        <AnimateIn stagger y={24} className="grid gap-14 lg:grid-cols-[1.4fr_0.8fr_0.8fr_1fr]">
           <div>
             <Link href="/" className="inline-flex items-center">
               <span className="inline-flex items-center rounded-xl bg-white px-3 py-1.5">
@@ -93,12 +94,16 @@ export default function Footer() {
               ))}
             </div>
           </div>
-        </div>
+        </AnimateIn>
 
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs text-white/40 sm:flex-row">
+        <AnimateIn
+          delay={0.2}
+          y={12}
+          className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs text-white/40 sm:flex-row"
+        >
           <p>© {new Date().getFullYear()} Premium Web Agency. All rights reserved.</p>
           <p>Designed &amp; built with care.</p>
-        </div>
+        </AnimateIn>
       </div>
     </footer>
   );

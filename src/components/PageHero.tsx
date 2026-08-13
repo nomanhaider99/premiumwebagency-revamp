@@ -8,7 +8,7 @@ type PageHeroProps = {
 
 export default function PageHero({ eyebrow, title, description }: PageHeroProps) {
   return (
-    <section className="relative overflow-hidden bg-[color:var(--color-ink)] pt-40 pb-28 text-white">
+    <section className="relative overflow-hidden bg-[color:var(--color-ink)] pt-40 pb-20 text-white">
       <div className="noise-overlay" />
       <div
         className="pointer-events-none absolute -top-40 right-[-10%] h-[28rem] w-[28rem] rounded-full opacity-30 blur-3xl"

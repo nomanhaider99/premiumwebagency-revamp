@@ -32,7 +32,7 @@ export default function ContactPage() {
         description="Tell us a bit about your project and goals. We'll get back to you within one business day to schedule an intro call."
       />
 
-      <section className="py-24 lg:py-32">
+      <section className="py-16 lg:py-24">
         <div className="container-px grid gap-16 lg:grid-cols-[1fr_1.3fr] lg:gap-20">
           <AnimateIn>
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">

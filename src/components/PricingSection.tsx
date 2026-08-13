@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import MagneticButton from "@/components/MagneticButton";
+import TiltCard from "@/components/TiltCard";
 import { plansByCategory, pricingCategories, type PricingCategory } from "@/data/pricing";
 
 type Cycle = "monthly" | "yearly";
@@ -55,15 +56,9 @@ export default function PricingSection() {
       <div key={category} className="mt-14 grid gap-6 lg:grid-cols-3 lg:items-start">
         {plans.map((plan) => {
           const price = cycle === "monthly" ? plan.monthly : plan.yearly;
-          return (
-            <div
-              key={plan.id}
-              className={`relative flex h-full flex-col rounded-3xl border p-8 transition-all duration-500 ${
-                plan.featured
-                  ? "border-[color:var(--color-primary)]/30 bg-[color:var(--color-surface)] text-white shadow-2xl shadow-[color:var(--color-primary)]/20 lg:-translate-y-4"
-                  : "border-white/10 bg-white/[0.03] text-white hover:-translate-y-1 hover:shadow-xl hover:shadow-[color:var(--color-primary)]/10"
-              }`}
-            >
+
+          const content = (
+            <>
               {plan.featured && (
                 <Badge className="absolute -top-3 left-8 bg-[color:var(--color-primary)] text-white">
                   Most popular
@@ -111,7 +106,27 @@ export default function PricingSection() {
                   Get started
                 </MagneticButton>
               </div>
-            </div>
+            </>
+          );
+
+          if (plan.featured) {
+            return (
+              <div
+                key={plan.id}
+                className="relative flex h-full flex-col rounded-3xl border border-[color:var(--color-primary)]/30 bg-[color:var(--color-surface)] p-8 text-white shadow-2xl shadow-[color:var(--color-primary)]/20 lg:-translate-y-4"
+              >
+                {content}
+              </div>
+            );
+          }
+
+          return (
+            <TiltCard
+              key={plan.id}
+              className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-8 text-white transition-shadow duration-500 hover:shadow-xl hover:shadow-[color:var(--color-primary)]/10"
+            >
+              {content}
+            </TiltCard>
           );
         })}
       </div>

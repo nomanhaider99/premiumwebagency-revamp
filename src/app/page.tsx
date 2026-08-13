@@ -7,6 +7,7 @@ import ProcessSteps from "@/components/ProcessSteps";
 import PortfolioTabs from "@/components/PortfolioTabs";
 import PricingSection from "@/components/PricingSection";
 import MagneticButton from "@/components/MagneticButton";
+import TiltCard from "@/components/TiltCard";
 import { services } from "@/data/services";
 import { projects } from "@/data/projects";
 import { testimonials } from "@/data/testimonials";
@@ -29,7 +30,7 @@ export default function Home() {
         />
       </section>
 
-      <section id="services" className="bg-[color:var(--color-surface)]/50 py-28 lg:py-36">
+      <section id="services" className="bg-[color:var(--color-surface)]/50 py-20 lg:py-28">
         <div className="container-px">
           <AnimateIn className="max-w-2xl">
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
@@ -48,7 +49,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-24">
+      <section className="py-16">
         <div className="container-px">
           <AnimateIn
             stagger
@@ -62,7 +63,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-[color:var(--color-ink)] py-28 text-white lg:py-36">
+      <section className="bg-[color:var(--color-ink)] py-20 text-white lg:py-28">
         <div className="container-px">
           <AnimateIn className="max-w-2xl">
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-sky)]">
@@ -79,7 +80,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-28 lg:py-36">
+      <section className="py-20 lg:py-28">
         <div className="container-px">
           <AnimateIn className="flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-xl">
@@ -102,7 +103,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="pricing" className="bg-[color:var(--color-surface)]/50 py-28 lg:py-36">
+      <section id="pricing" className="bg-[color:var(--color-surface)]/50 py-20 lg:py-28">
         <div className="container-px">
           <AnimateIn className="flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-xl">
@@ -125,7 +126,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-28 lg:py-36">
+      <section className="py-20 lg:py-28">
         <div className="container-px">
           <AnimateIn className="max-w-2xl">
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
@@ -138,7 +139,7 @@ export default function Home() {
 
           <AnimateIn stagger className="mt-16 grid gap-6 lg:grid-cols-3">
             {testimonials.map((t) => (
-              <div
+              <TiltCard
                 key={t.name}
                 className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-8"
               >
@@ -154,13 +155,13 @@ export default function Home() {
                   </p>
                   <p className="text-xs text-white/50">{t.role}</p>
                 </div>
-              </div>
+              </TiltCard>
             ))}
           </AnimateIn>
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[color:var(--color-ink)] py-28 text-white lg:py-36">
+      <section className="relative overflow-hidden bg-[color:var(--color-ink)] py-20 text-white lg:py-28">
         <div className="noise-overlay" />
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 h-[36rem] w-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-25 blur-3xl"

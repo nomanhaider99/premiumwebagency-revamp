@@ -27,13 +27,13 @@ export default function WorkPage() {
         description="A selection of brands we've helped design, build, and grow — across finance, e-commerce, healthcare, and beyond."
       />
 
-      <section className="py-24 lg:py-32">
+      <section className="py-16 lg:py-24">
         <div className="container-px">
           <PortfolioTabs projects={projects} />
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[color:var(--color-ink)] py-24 text-center text-white lg:py-32">
+      <section className="relative overflow-hidden bg-[color:var(--color-ink)] py-16 text-center text-white lg:py-24">
         <div className="noise-overlay" />
         <div className="container-px relative">
           <AnimateIn>

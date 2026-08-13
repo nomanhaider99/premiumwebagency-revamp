@@ -49,7 +49,7 @@ export default async function ServiceDetailPage(
 
   return (
     <>
-      <section className="relative overflow-hidden bg-[color:var(--color-ink)] pt-40 pb-28 text-white">
+      <section className="relative overflow-hidden bg-[color:var(--color-ink)] pt-40 pb-20 text-white">
         <div className="noise-overlay" />
         <div
           className="pointer-events-none absolute -top-40 right-[-10%] h-[28rem] w-[28rem] rounded-full opacity-30 blur-3xl"
@@ -109,7 +109,7 @@ export default async function ServiceDetailPage(
         </div>
       </section>
 
-      <section className="py-24 lg:py-32">
+      <section className="py-16 lg:py-24">
         <div className="container-px">
           <AnimateIn className="max-w-2xl">
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
@@ -142,7 +142,7 @@ export default async function ServiceDetailPage(
       </section>
 
       {relatedProjects.length > 0 && (
-        <section className="bg-[color:var(--color-surface)]/50 py-24 lg:py-32">
+        <section className="bg-[color:var(--color-surface)]/50 py-16 lg:py-24">
           <div className="container-px">
             <AnimateIn className="flex flex-wrap items-end justify-between gap-6">
               <div className="max-w-xl">
@@ -171,7 +171,7 @@ export default async function ServiceDetailPage(
         </section>
       )}
 
-      <section className="py-24 lg:py-32">
+      <section className="py-16 lg:py-24">
         <div className="container-px">
           <AnimateIn className="max-w-2xl">
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
@@ -188,7 +188,7 @@ export default async function ServiceDetailPage(
         </div>
       </section>
 
-      <section className="bg-[color:var(--color-surface)]/50 py-24 lg:py-32">
+      <section className="bg-[color:var(--color-surface)]/50 py-16 lg:py-24">
         <div className="container-px">
           <AnimateIn className="max-w-2xl">
             <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
@@ -207,7 +207,7 @@ export default async function ServiceDetailPage(
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[color:var(--color-ink)] py-24 text-white lg:py-32">
+      <section className="relative overflow-hidden bg-[color:var(--color-ink)] py-16 text-white lg:py-24">
         <div className="noise-overlay" />
         <div className="container-px relative">
           <div className="flex flex-wrap items-center justify-between gap-6 border-b border-white/10 pb-10">

@@ -60,25 +60,21 @@ export default function Navbar() {
   }, [open]);
 
   return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-[color:var(--color-ink)]/85 backdrop-blur-md shadow-[0_1px_0_0_rgba(0,0,0,0.2)]"
-          : "bg-transparent"
-      }`}
-    >
-      <nav className="container-px flex items-center justify-between h-20">
+    <header className="fixed inset-x-0 top-3 px-4 z-50 transition-all duration-300">
+      <nav
+        className={`container-px mx-auto flex items-center justify-between h-20 rounded-2xl border border-black/10 bg-white/90 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.15)] transition-all duration-300 ${
+          scrolled ? "max-w-7xl" : "max-w-6xl"
+        }`}
+      >
         <Link href="/" className="flex items-center">
-          <span className="inline-flex items-center rounded-xl bg-white px-3 py-1.5 shadow-sm ring-1 ring-black/5 transition-shadow duration-300">
-            <Image
-              src="/logo.webp"
-              alt="Premium Web Agency"
-              width={180}
-              height={61}
-              priority
-              className="h-8 w-auto"
-            />
-          </span>
+          <Image
+            src="/logo.webp"
+            alt="Premium Web Agency"
+            width={180}
+            height={61}
+            priority
+            className="h-10 w-auto"
+          />
         </Link>
 
         <div className="hidden md:flex h-full items-center gap-10">
@@ -95,8 +91,10 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative text-sm font-medium transition-colors group ${
-                  active ? "text-white" : "text-white/70 hover:text-white"
+                className={`relative text-sm font-semibold transition-colors group ${
+                  active
+                    ? "text-[color:var(--color-ink)]"
+                    : "text-[color:var(--color-ink)]/80 hover:text-[color:var(--color-ink)]"
                 }`}
               >
                 {link.label}
@@ -113,7 +111,7 @@ export default function Navbar() {
         <div className="hidden md:block">
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-[color:var(--color-ink)] transition-all hover:bg-[color:var(--color-sky)] hover:shadow-lg hover:shadow-[color:var(--color-primary)]/30"
+            className="inline-flex items-center gap-2 rounded-full bg-[color:var(--color-ink)] px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-[color:var(--color-primary)] hover:shadow-lg hover:shadow-[color:var(--color-primary)]/30"
           >
             Start a project
           </Link>
@@ -125,17 +123,17 @@ export default function Navbar() {
           className="md:hidden relative h-10 w-10 flex flex-col items-center justify-center gap-1.5"
         >
           <span
-            className={`block h-0.5 w-6 bg-white transition-transform duration-300 ${
+            className={`block h-0.5 w-6 bg-[color:var(--color-ink)] transition-transform duration-300 ${
               open ? "translate-y-2 rotate-45" : ""
             }`}
           />
           <span
-            className={`block h-0.5 w-6 bg-white transition-opacity duration-300 ${
+            className={`block h-0.5 w-6 bg-[color:var(--color-ink)] transition-opacity duration-300 ${
               open ? "opacity-0" : "opacity-100"
             }`}
           />
           <span
-            className={`block h-0.5 w-6 bg-white transition-transform duration-300 ${
+            className={`block h-0.5 w-6 bg-[color:var(--color-ink)] transition-transform duration-300 ${
               open ? "-translate-y-2 -rotate-45" : ""
             }`}
           />
@@ -144,21 +142,21 @@ export default function Navbar() {
 
       <div
         ref={menuRef}
-        className="md:hidden hidden flex-col gap-1 bg-[color:var(--color-ink)]/95 backdrop-blur-md px-6 pb-6 pt-2 shadow-lg"
+        className="md:hidden hidden flex-col gap-1 rounded-2xl mt-2 bg-white/95 backdrop-blur-md px-6 pb-6 pt-2 shadow-lg border border-black/10"
         style={{ display: "none" }}
       >
         {links.map((link) => (
           <Link
             key={link.href}
             href={link.href}
-            className="py-3 text-base font-medium text-white border-b border-white/10 last:border-none"
+            className="py-3 text-base font-medium text-[color:var(--color-ink)] border-b border-black/10 last:border-none"
           >
             {link.label}
           </Link>
         ))}
         <Link
           href="/contact"
-          className="mt-4 inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-medium text-[color:var(--color-ink)]"
+          className="mt-4 inline-flex items-center justify-center rounded-full bg-[color:var(--color-ink)] px-5 py-3 text-sm font-medium text-white"
         >
           Start a project
         </Link>
