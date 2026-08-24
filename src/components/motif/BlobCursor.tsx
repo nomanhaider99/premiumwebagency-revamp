@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
-import { animate } from "framer-motion";
+import { useEffect, useRef } from "react";
 import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
 
 type BlobCursorProps = {
@@ -10,42 +9,48 @@ type BlobCursorProps = {
   /** how many blobs make up the liquid trail behind it */
   trailCount?: number;
   trailSizes?: number[];
+  /**
+   * How hard each element resists the pointer, as the fraction of the gap it
+   * keeps per second. Smaller catches up faster; the ball leads and the trail
+   * lags progressively, which is what smears it into a tail.
+   */
+  followBases?: number[];
   filterId?: string;
   filterStdDeviation?: number;
   filterColorMatrixValues?: string;
-  fastDuration?: number;
-  slowDuration?: number;
   zIndex?: number;
 };
 
 /**
  * React Bits' Blob Cursor, restyled as the smoky glass ball from the
- * reference.
+ * reference and given jelly physics.
  *
  * The mechanism is React Bits': a short trail of blobs chases the pointer at
  * staggered speeds through one SVG goo filter — a heavy blur followed by a
- * colour matrix that hard-thresholds alpha, fusing them into a metaball. Two
- * departures from the original: it listens on the window and sits fixed over
+ * colour matrix that hard-thresholds alpha, fusing them into a metaball.
+ * Departures from the original: it listens on the window and sits fixed over
  * the viewport (theirs is a demo box that only tracks inside its own bounds),
- * and the tweens run on framer-motion's imperative `animate` rather than GSAP,
- * which this project no longer depends on.
+ * and the follow runs on one rAF loop instead of firing a fresh GSAP tween per
+ * element per pointermove. That loop is also what makes the jelly possible —
+ * a tween knows where it is going but not how fast it is travelling, and speed
+ * is the whole input to the deformation.
  *
- * The look comes from the reference image, which is a near-black ball only a
- * shade lighter than the page, with a brighter marbled halo at the rim and an
- * organic, slightly wobbly edge — glass, not a tinted disc.
+ * Jelly is two things working together:
  *
- * The one thing CSS cannot reproduce is the magnification. The reference is a
- * rendered 3D ball refracting a texture, so the letters behind it are visibly
- * enlarged; there is no way to scale an arbitrary backdrop under a free-moving
- * cursor. What stands in for it is a contrast lift — which deepens the dark
- * ground into the body of the ball while leaving bright type punching through
- * white, exactly as it does in the reference — plus a slight blur for the soft,
- * liquid edge the letters take on inside.
+ *   Squash and stretch — the body lengthens along its direction of travel and
+ *   narrows across it, in proportion to speed. It rotates into the heading,
+ *   scales, then rotates back, so the stretch follows the movement rather than
+ *   the element's own axes. That is what sells mass.
+ *
+ *   Wobble — the blown outline oscillates around its rest shape on a decaying
+ *   sine, kicked by how hard the ball is moving, so it keeps jiggling for a
+ *   moment after the pointer stops instead of snapping rigid.
+ *
+ * The deformation lives on its own wrapper, never on the node carrying the
+ * position, so the two transforms cannot fight.
  */
 
-/** GSAP's `power3.out` and `power1.out`, as cubic-beziers */
-const FAST_EASE = [0.215, 0.61, 0.355, 1] as const;
-const SLOW_EASE = [0.25, 0.46, 0.45, 0.94] as const;
+const REST_RADIUS = "49% 51% 48% 52% / 52% 48% 52% 48%";
 
 /** the marbling inside the body, and the cloudier band around the rim */
 const MARBLE =
@@ -55,45 +60,138 @@ export default function BlobCursor({
   size = 250,
   trailCount = 3,
   trailSizes = [120, 92, 68],
+  followBases = [0.0009, 0.02, 0.08, 0.2],
   filterId = "blob",
   filterStdDeviation = 26,
   filterColorMatrixValues = "1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 32 -9",
-  fastDuration = 0.1,
-  slowDuration = 0.5,
   zIndex = 100,
 }: BlobCursorProps) {
   const ballRef = useRef<HTMLDivElement | null>(null);
+  const jellyRef = useRef<HTMLDivElement | null>(null);
+  const blobRef = useRef<HTMLDivElement | null>(null);
   const trailRef = useRef<Array<HTMLDivElement | null>>([]);
   const reduced = usePrefersReducedMotion();
-
-  const handleMove = useCallback(
-    (x: number, y: number) => {
-      const drive = (el: HTMLDivElement | null, i: number) => {
-        if (!el) return;
-        const isLead = i === 0;
-        animate(
-          el,
-          { x, y },
-          {
-            duration: isLead ? fastDuration : slowDuration,
-            ease: isLead ? [...FAST_EASE] : [...SLOW_EASE],
-          }
-        );
-      };
-      drive(ballRef.current, 0);
-      trailRef.current.forEach((el, i) => drive(el, i + 1));
-    },
-    [fastDuration, slowDuration]
-  );
 
   useEffect(() => {
     if (reduced) return;
     if (!window.matchMedia("(pointer: fine)").matches) return;
 
-    const onPointer = (e: PointerEvent) => handleMove(e.clientX, e.clientY);
-    window.addEventListener("pointermove", onPointer, { passive: true });
-    return () => window.removeEventListener("pointermove", onPointer);
-  }, [handleMove, reduced]);
+    const ball = ballRef.current;
+    const jellyEl = jellyRef.current;
+    const blob = blobRef.current;
+    if (!ball || !jellyEl || !blob) return;
+
+    const target = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    /** index 0 is the ball; the rest are the trail, in order */
+    const nodes = [ball, ...trailRef.current.filter(Boolean)] as HTMLDivElement[];
+    const pos = nodes.map(() => ({ ...target }));
+
+    let seen = false;
+    let alpha = 0;
+    // the jelly's own state
+    let vx = 0;
+    let vy = 0;
+    let wob = 0;
+    let phase = 0;
+    let idle = false;
+
+    const onMove = (e: PointerEvent) => {
+      if (!seen) {
+        // first sighting: drop it straight onto the pointer, don't fly in
+        seen = true;
+        pos.forEach((p) => {
+          p.x = e.clientX;
+          p.y = e.clientY;
+        });
+      }
+      target.x = e.clientX;
+      target.y = e.clientY;
+    };
+    const onLeave = () => {
+      seen = false;
+    };
+
+    let raf = 0;
+    let last = performance.now();
+
+    const frame = (now: number) => {
+      raf = requestAnimationFrame(frame);
+      // clamped so a backgrounded tab doesn't snap it across the page
+      const dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
+
+      alpha += ((seen ? 1 : 0) - alpha) * (1 - Math.pow(0.001, dt));
+
+      nodes.forEach((node, i) => {
+        const p = pos[i];
+        const base = followBases[Math.min(i, followBases.length - 1)];
+        const k = 1 - Math.pow(base, dt);
+        const dx = (target.x - p.x) * k;
+        const dy = (target.y - p.y) * k;
+        p.x += dx;
+        p.y += dy;
+
+        node.style.transform = `translate3d(${p.x.toFixed(1)}px, ${p.y.toFixed(
+          1
+        )}px, 0)`;
+
+        if (i === 0) {
+          // px/sec, smoothed — raw per-frame deltas read as flicker. The
+          // smoothing is time-based like everything else here, so the jelly
+          // settles in the same wall-clock time on a 120Hz panel as on 60.
+          const sx = dx / Math.max(dt, 0.001);
+          const sy = dy / Math.max(dt, 0.001);
+          const vk = 1 - Math.pow(1e-8, dt);
+          vx += (sx - vx) * vk;
+          vy += (sy - vy) * vk;
+        }
+      });
+
+      ball.style.opacity = alpha.toFixed(3);
+
+      const speed = Math.hypot(vx, vy);
+      const stretch = 1 + Math.min(speed * 0.00013, 0.22);
+      const squash = 1 - Math.min(speed * 0.0001, 0.16);
+      const angle = speed > 24 ? (Math.atan2(vy, vx) * 180) / Math.PI : 0;
+
+      jellyEl.style.transform =
+        `rotate(${angle.toFixed(2)}deg) ` +
+        `scale(${stretch.toFixed(3)}, ${squash.toFixed(3)}) ` +
+        `rotate(${(-angle).toFixed(2)}deg)`;
+
+      wob = Math.max(wob * Math.pow(0.06, dt), Math.min(speed * 0.007, 14));
+      phase += dt * 21;
+
+      // The blob carries the backdrop-filter, so every border-radius write
+      // makes the browser re-filter what is behind it. Once the wobble has
+      // died down, park it at rest and stop writing.
+      if (wob < 0.15) {
+        if (!idle) {
+          blob.style.borderRadius = REST_RADIUS;
+          idle = true;
+        }
+      } else {
+        idle = false;
+        const a = Math.sin(phase) * wob;
+        const b = Math.cos(phase * 0.87) * wob;
+        blob.style.borderRadius =
+          `${(49 + a).toFixed(1)}% ${(51 - a).toFixed(1)}% ` +
+          `${(48 + b).toFixed(1)}% ${(52 - b).toFixed(1)}% / ` +
+          `${(52 + b).toFixed(1)}% ${(48 - b).toFixed(1)}% ` +
+          `${(52 + a).toFixed(1)}% ${(48 - a).toFixed(1)}%`;
+      }
+    };
+
+    raf = requestAnimationFrame(frame);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    document.addEventListener("pointerleave", onLeave);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerleave", onLeave);
+    };
+  }, [reduced, followBases]);
 
   if (reduced) return null;
 
@@ -111,8 +209,9 @@ export default function BlobCursor({
             stdDeviation={filterStdDeviation}
           />
           <feColorMatrix in="blur" values={filterColorMatrixValues} result="goo" />
-          {/* the trail is only a faint smear of the same glass, so its alpha
-              comes back down after the threshold that fused it */}
+          {/* The goo step multiplies alpha to fuse the blobs, which also drives
+              anything translucent to fully opaque — so the transparency has to
+              be put back after the threshold, not set on the blobs. */}
           <feColorMatrix
             in="goo"
             values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.5 0"
@@ -149,7 +248,7 @@ export default function BlobCursor({
           empty backdrop and shows nothing */}
       <div
         ref={ballRef}
-        className="absolute will-change-transform"
+        className="absolute opacity-0 will-change-transform"
         style={{
           width: size,
           height: size,
@@ -157,60 +256,68 @@ export default function BlobCursor({
           marginTop: -size / 2,
         }}
       >
+        {/* the jelly: squash-and-stretch lives here rather than on the node
+            carrying the position, so the two transforms never fight */}
         <div
-          className="relative h-full w-full overflow-hidden"
-          style={{
-            // blown glass is never truly round; the wobble is what stops this
-            // reading as a CSS circle laid over the page
-            borderRadius: "49% 51% 48% 52% / 52% 48% 52% 48%",
-            // contrast is what builds the body: it deepens the dark ground into
-            // the ball while leaving bright type punching through white
-            backdropFilter: "blur(2.4px) contrast(1.35) saturate(0.92)",
-            WebkitBackdropFilter: "blur(2.4px) contrast(1.35) saturate(0.92)",
-          }}
+          ref={jellyRef}
+          className="h-full w-full will-change-transform"
         >
-          {/* the body: barely lighter than the page at the centre, lifting to a
-              cloudier halo at the rim, which is how the reference reads */}
           <div
-            className="absolute inset-0"
+            ref={blobRef}
+            className="relative h-full w-full overflow-hidden"
             style={{
-              borderRadius: "inherit",
-              background:
-                "radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--text) 0.8%, transparent) 0%, color-mix(in srgb, var(--text) 1.2%, transparent) 55%, color-mix(in srgb, var(--text) 9%, transparent) 92%, color-mix(in srgb, var(--text) 5%, transparent) 100%)",
+              // blown glass is never truly round; the wobble is what stops this
+              // reading as a CSS circle laid over the page
+              borderRadius: REST_RADIUS,
+              // contrast is what builds the body: it deepens the dark ground
+              // into the ball while leaving bright type punching through white
+              backdropFilter: "blur(2.4px) contrast(1.35) saturate(0.92)",
+              WebkitBackdropFilter: "blur(2.4px) contrast(1.35) saturate(0.92)",
             }}
-          />
+          >
+            {/* the body: barely lighter than the page at the centre, lifting to
+                a cloudier halo at the rim, which is how the reference reads */}
+            <div
+              className="absolute inset-0"
+              style={{
+                borderRadius: "inherit",
+                background:
+                  "radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--text) 0.8%, transparent) 0%, color-mix(in srgb, var(--text) 1.2%, transparent) 55%, color-mix(in srgb, var(--text) 9%, transparent) 92%, color-mix(in srgb, var(--text) 5%, transparent) 100%)",
+              }}
+            />
 
-          {/* the marbling rolling through the glass */}
-          <div
-            className="absolute inset-[-18%] mix-blend-overlay"
-            style={{
-              opacity: 0.13,
-              backgroundImage: MARBLE,
-              backgroundSize: "cover",
-            }}
-          />
+            {/* the marbling rolling through the glass */}
+            <div
+              className="absolute inset-[-18%] mix-blend-overlay"
+              style={{
+                opacity: 0.13,
+                backgroundImage: MARBLE,
+                backgroundSize: "cover",
+              }}
+            />
 
-          {/* the far wall turning away, and the faint wet edge */}
-          <div
-            className="absolute inset-0"
-            style={{
-              borderRadius: "inherit",
-              boxShadow:
-                "inset 0 0 0 1px color-mix(in srgb, var(--text) 10%, transparent)," +
-                "inset 10px 14px 34px color-mix(in srgb, var(--text) 7%, transparent)," +
-                "inset -14px -18px 40px color-mix(in srgb, var(--text) 5%, transparent)",
-            }}
-          />
+            {/* the far wall turning away, and the faint wet edge */}
+            <div
+              className="absolute inset-0"
+              style={{
+                borderRadius: "inherit",
+                boxShadow:
+                  "inset 0 0 0 1px color-mix(in srgb, var(--text) 10%, transparent)," +
+                  "inset 10px 14px 34px color-mix(in srgb, var(--text) 7%, transparent)," +
+                  "inset -14px -18px 40px color-mix(in srgb, var(--text) 5%, transparent)",
+              }}
+            />
 
-          {/* the two-tone inclusion sitting at the centre of the reference ball */}
-          <span
-            className="absolute left-1/2 top-1/2 h-[11px] w-[11px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-            style={{
-              background:
-                "linear-gradient(180deg, #6d1f22 0%, #6d1f22 48%, #4fb3ad 52%, #4fb3ad 100%)",
-              boxShadow: "0 0 6px rgba(0,0,0,0.55)",
-            }}
-          />
+            {/* the two-tone inclusion sitting at the centre of the reference */}
+            <span
+              className="absolute left-1/2 top-1/2 h-[11px] w-[11px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+              style={{
+                background:
+                  "linear-gradient(180deg, #6d1f22 0%, #6d1f22 48%, #4fb3ad 52%, #4fb3ad 100%)",
+                boxShadow: "0 0 6px rgba(0,0,0,0.55)",
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>
