@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import AnimateIn from "@/components/AnimateIn";
+import Reveal, { RevealItem } from "@/components/motion/Reveal";
 import WorkCard from "@/components/WorkCard";
 import type { Project, ProjectTag } from "@/data/projects";
 
@@ -17,44 +16,64 @@ const categories: (ProjectTag | "All")[] = [
 ];
 
 export default function PortfolioTabs({ projects }: { projects: Project[] }) {
-  const [active, setActive] = useState<(ProjectTag | "All")>("All");
+  const [active, setActive] = useState<ProjectTag | "All">("All");
 
   const filtered = useMemo(
     () =>
-      active === "All"
-        ? projects
-        : projects.filter((p) => p.tags.includes(active)),
+      active === "All" ? projects : projects.filter((p) => p.tags.includes(active)),
     [active, projects]
   );
 
   return (
     <div>
-      <Tabs value={active} onValueChange={(v) => setActive(v as ProjectTag | "All")}>
-        <TabsList className="h-auto flex-wrap justify-start gap-2 rounded-full border border-white/10 bg-white/5 p-1.5">
-          {categories.map((cat) => (
-            <TabsTrigger
+      <div
+        role="tablist"
+        aria-label="Filter projects"
+        className="flex flex-wrap justify-center gap-2"
+      >
+        {categories.map((cat) => {
+          const isActive = cat === active;
+          return (
+            <button
               key={cat}
-              value={cat}
-              className="rounded-full px-4 py-2 text-sm font-medium text-white/60 data-active:bg-white data-active:text-[color:var(--color-ink)] data-active:shadow-none"
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => setActive(cat)}
+              className={`h-9 rounded-full px-4 font-mono text-[10px] uppercase tracking-[0.14em] transition-colors duration-200 ${
+                isActive
+                  ? "text-[#04100c]"
+                  : "glass-quiet text-[color:var(--text-muted)] hover:text-[color:var(--text)]"
+              }`}
+              style={
+                isActive
+                  ? {
+                      background:
+                        "linear-gradient(100deg, var(--signal), color-mix(in srgb, var(--circuit) 55%, var(--signal)))",
+                    }
+                  : undefined
+              }
             >
               {cat}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
+            </button>
+          );
+        })}
+      </div>
 
-      <AnimateIn
+      <Reveal
         key={active}
         stagger
-        className="mt-14 grid gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3"
+        className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
       >
         {filtered.map((p) => (
-          <WorkCard key={p.slug} project={p} />
+          <RevealItem key={p.slug} className="h-full">
+            <WorkCard project={p} />
+          </RevealItem>
         ))}
-      </AnimateIn>
+      </Reveal>
 
       {filtered.length === 0 && (
-        <p className="mt-14 text-center text-sm text-white/50">
+        <p className="mt-12 text-center text-[13px]">
           No projects in this category yet.
         </p>
       )}

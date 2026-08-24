@@ -1,132 +1,137 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import MagneticButton from "@/components/MagneticButton";
-import TiltCard from "@/components/TiltCard";
-import { plansByCategory, pricingCategories, type PricingCategory } from "@/data/pricing";
+import { motion, useReducedMotion } from "framer-motion";
+import PillButton from "@/components/motif/PillButton";
+import {
+  plansByCategory,
+  pricingCategories,
+  type PricingCategory,
+} from "@/data/pricing";
 
 type Cycle = "monthly" | "yearly";
+
+function Chip({
+  active,
+  children,
+  onClick,
+}: {
+  active: boolean;
+  children: React.ReactNode;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      onClick={onClick}
+      className={`h-9 rounded-full px-4 font-mono text-[10px] uppercase tracking-[0.14em] transition-colors duration-200 ${
+        active
+          ? "text-[#04100c]"
+          : "glass-quiet text-[color:var(--text-muted)] hover:text-[color:var(--text)]"
+      }`}
+      style={
+        active
+          ? {
+              background:
+                "linear-gradient(100deg, var(--signal), color-mix(in srgb, var(--circuit) 55%, var(--signal)))",
+            }
+          : undefined
+      }
+    >
+      {children}
+    </button>
+  );
+}
 
 export default function PricingSection() {
   const [category, setCategory] = useState<PricingCategory>("All");
   const [cycle, setCycle] = useState<Cycle>("monthly");
+  const still = useReducedMotion();
 
   const plans = useMemo(() => plansByCategory[category], [category]);
 
   return (
     <div>
-      <Tabs value={category} onValueChange={(v) => setCategory(v as PricingCategory)}>
-        <TabsList className="h-auto flex-wrap justify-start gap-2 rounded-full border border-white/10 bg-white/5 p-1.5">
-          {pricingCategories.map((cat) => (
-            <TabsTrigger
-              key={cat}
-              value={cat}
-              className="rounded-full px-4 py-2 text-sm font-medium text-white/60 data-active:bg-white data-active:text-[color:var(--color-ink)] data-active:shadow-none"
-            >
-              {cat}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
-
-      <div className="mt-8 flex justify-center">
-        <Tabs value={cycle} onValueChange={(v) => setCycle(v as Cycle)}>
-          <TabsList className="h-auto rounded-full border border-white/10 bg-white/5 p-1">
-            <TabsTrigger
-              value="monthly"
-              className="rounded-full px-5 py-2 text-sm font-medium text-white/60 data-active:bg-white data-active:text-[color:var(--color-ink)] data-active:shadow-none"
-            >
-              Monthly
-            </TabsTrigger>
-            <TabsTrigger
-              value="yearly"
-              className="rounded-full px-5 py-2 text-sm font-medium text-white/60 data-active:bg-white data-active:text-[color:var(--color-ink)] data-active:shadow-none"
-            >
-              Yearly
-              <span className="ml-1.5 rounded-full bg-[color:var(--color-primary)]/15 px-1.5 py-0.5 text-[11px] font-semibold text-[color:var(--color-primary)]">
-                Save 20%
-              </span>
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
+      <div className="flex flex-wrap justify-center gap-2">
+        {pricingCategories.map((cat) => (
+          <Chip key={cat} active={cat === category} onClick={() => setCategory(cat)}>
+            {cat}
+          </Chip>
+        ))}
       </div>
 
-      <div key={category} className="mt-14 grid gap-6 lg:grid-cols-3 lg:items-start">
+      <div className="mt-4 flex justify-center gap-2">
+        <Chip active={cycle === "monthly"} onClick={() => setCycle("monthly")}>
+          Monthly
+        </Chip>
+        <Chip active={cycle === "yearly"} onClick={() => setCycle("yearly")}>
+          Yearly — save 20%
+        </Chip>
+      </div>
+
+      <div key={category} className="mt-12 grid gap-5 lg:grid-cols-3">
         {plans.map((plan) => {
           const price = cycle === "monthly" ? plan.monthly : plan.yearly;
 
-          const content = (
-            <>
+          return (
+            <motion.div
+              key={plan.id}
+              whileHover={still ? undefined : { scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 260, damping: 22 }}
+              className={`glass-card relative flex h-full flex-col p-7 ${
+                plan.featured
+                  ? "shadow-[0_14px_60px_color-mix(in_srgb,var(--signal)_20%,transparent)]"
+                  : ""
+              }`}
+            >
               {plan.featured && (
-                <Badge className="absolute -top-3 left-8 bg-[color:var(--color-primary)] text-white">
+                <span
+                  className="absolute right-6 top-6 rounded-full px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.14em] text-[#04100c]"
+                  style={{
+                    background:
+                      "linear-gradient(100deg, var(--signal), color-mix(in srgb, var(--circuit) 55%, var(--signal)))",
+                  }}
+                >
                   Most popular
-                </Badge>
+                </span>
               )}
 
-              <h3 className="font-[family-name:var(--font-display)] text-xl font-semibold text-white">
-                {plan.name}
-              </h3>
-              <p className="mt-1.5 text-sm text-white/60">
-                {plan.tagline}
-              </p>
+              <h3 className="text-[1.15rem]">{plan.name}</h3>
+              <p className="mt-2 text-[13px]">{plan.tagline}</p>
 
-              <div className="mt-6 flex items-end gap-1.5">
-                <span className="font-[family-name:var(--font-display)] text-4xl font-bold tracking-tight text-white">
+              <p className="mt-7 flex items-end gap-1.5">
+                <span className="font-mono text-[2.1rem] leading-none text-[color:var(--text)]">
                   ${price.toLocaleString()}
                 </span>
-                <span className="pb-1.5 text-sm text-white/50">
+                <span className="pb-1 font-mono text-[11px] text-[color:var(--text-muted)]">
                   /mo
                 </span>
-              </div>
+              </p>
 
-              <ul className="mt-8 flex-1 space-y-3 border-t border-white/15 pt-6">
+              <ul className="mt-7 flex-1 space-y-2.5 border-t border-[color:var(--border)] pt-6">
                 {plan.features.map((f) => (
-                  <li
-                    key={f}
-                    className="flex items-start gap-2.5 text-sm text-white/75"
-                  >
+                  <li key={f} className="flex items-start gap-2.5 text-[13px]">
                     <span
-                      className={`mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full ${
-                        plan.featured ? "bg-[color:var(--color-sky)]" : "bg-[color:var(--color-primary)]"
-                      }`}
+                      aria-hidden
+                      className="mt-[7px] h-1 w-1 shrink-0 rounded-full"
+                      style={{ background: "var(--signal)" }}
                     />
                     {f}
                   </li>
                 ))}
               </ul>
 
-              <div className="mt-8">
-                <MagneticButton
+              <div className="mt-7">
+                <PillButton
                   href="/contact"
-                  variant={plan.featured ? "light" : "outline"}
-                  className="w-full justify-center"
+                  tone={plan.featured ? "signal" : "glass"}
+                  className="w-full"
                 >
                   Get started
-                </MagneticButton>
+                </PillButton>
               </div>
-            </>
-          );
-
-          if (plan.featured) {
-            return (
-              <div
-                key={plan.id}
-                className="relative flex h-full flex-col rounded-3xl border border-[color:var(--color-primary)]/30 bg-[color:var(--color-surface)] p-8 text-white shadow-2xl shadow-[color:var(--color-primary)]/20 lg:-translate-y-4"
-              >
-                {content}
-              </div>
-            );
-          }
-
-          return (
-            <TiltCard
-              key={plan.id}
-              className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-8 text-white transition-shadow duration-500 hover:shadow-xl hover:shadow-[color:var(--color-primary)]/10"
-            >
-              {content}
-            </TiltCard>
+            </motion.div>
           );
         })}
       </div>

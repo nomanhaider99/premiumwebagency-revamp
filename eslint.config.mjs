@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored: pulled in verbatim by `shadcn add @skiper-ui/*`. Linting
+    // someone else's generated source only tempts us to edit it, and any
+    // edit is lost the next time the component is re-added.
+    "src/components/ui/skiper-ui/**",
   ]),
 ]);
 

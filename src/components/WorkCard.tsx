@@ -1,37 +1,61 @@
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/data/projects";
-import TiltCard from "@/components/TiltCard";
 
 export default function WorkCard({ project }: { project: Project }) {
-  return (
-    <div className="group cursor-pointer">
-      <TiltCard
-        className={`h-72 overflow-hidden rounded-3xl bg-gradient-to-br ${project.gradient}`}
-      >
-        <div className="noise-overlay" />
-        <div className="absolute inset-0 flex items-end justify-between p-7">
-          <span className="font-[family-name:var(--font-alt)] text-sm text-white/80">
-            {project.year}
-          </span>
-          <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition-all duration-500 group-hover:bg-white group-hover:text-[color:var(--color-ink)] group-hover:rotate-45">
-            ↗
-          </span>
-        </div>
-        <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/10" />
-      </TiltCard>
+  const still = useReducedMotion();
 
-      <div className="mt-5 flex items-start justify-between gap-4">
-        <div>
-          <h3 className="font-[family-name:var(--font-display)] text-xl font-semibold tracking-wide text-white">
+  return (
+    <motion.article
+      whileHover={still ? undefined : { scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 260, damping: 22 }}
+      className="glass-card group h-full overflow-hidden transition-shadow duration-300 hover:shadow-[0_14px_60px_color-mix(in_srgb,var(--circuit)_18%,transparent)]"
+    >
+      <div className="relative aspect-[16/10] overflow-hidden">
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(135deg, color-mix(in srgb, var(--signal) 55%, transparent), color-mix(in srgb, var(--circuit) 65%, transparent))",
+          }}
+        />
+        <div aria-hidden className="grid-texture absolute inset-0 opacity-40" />
+
+        <div className="absolute inset-0 flex flex-col justify-between p-5">
+          <div className="flex items-start justify-between">
+            <span className="glass-scrim rounded-full px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.16em] text-[color:var(--text)]">
+              {project.year}
+            </span>
+            <ArrowUpRight
+              aria-hidden
+              className="h-4 w-4 text-[color:var(--text)] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </div>
+          <p className="text-[1.25rem] font-medium text-[color:var(--text)]">
             {project.name}
-          </h3>
-          <p className="mt-1 text-sm text-white/55">
-            {project.category}
           </p>
         </div>
       </div>
-      <p className="mt-3 text-sm leading-relaxed text-white/60">
-        {project.description}
-      </p>
-    </div>
+
+      <div className="p-5">
+        <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-[color:var(--signal-ink)]">
+          {project.category}
+        </p>
+        <p className="mt-3 text-[13px] leading-relaxed">{project.description}</p>
+        <div className="mt-4 flex flex-wrap gap-1.5">
+          {project.tags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full border border-[color:var(--border)] px-2.5 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-[color:var(--text-muted)]"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    </motion.article>
   );
 }

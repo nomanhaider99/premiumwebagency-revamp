@@ -1,23 +1,36 @@
 import type { Metadata } from "next";
-import { Michroma, Quicksand } from "next/font/google";
+import { Bricolage_Grotesque, Manrope, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import Preloader from "@/components/Preloader";
-import SmoothScrollProvider from "@/components/SmoothScrollProvider";
-import ParticleField from "@/components/ParticleField";
+import ThemeProvider from "@/components/ThemeProvider";
+import ContactDialogProvider from "@/components/ContactDialog";
+import BlobCursor from "@/components/motif/BlobCursor";
 import { cn } from "@/lib/utils";
 
-const michroma = Michroma({
-  variable: "--font-michroma",
+/* Bricolage Grotesque carries every heading — its optical-size axis is what
+   keeps the display sizes tight without the small ones going spindly. */
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-display-face",
   subsets: ["latin"],
-  weight: ["400"],
+  axes: ["opsz", "wdth"],
+  display: "swap",
 });
 
-const quicksand = Quicksand({
-  variable: "--font-quicksand",
+/* Manrope runs the body copy. */
+const manrope = Manrope({
+  variable: "--font-body-face",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+/* Geist Mono stays on data, badges, nav eyebrows and stat callouts. Neither
+   of the two faces above is monospaced, and dropping the mono role is what
+   would make the technical labels read as decoration. */
+const geistMono = Geist_Mono({
+  variable: "--font-mono-face",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -28,18 +41,36 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
+    // suppressHydrationWarning is required by next-themes: its inline script
+    // stamps the class onto <html> before React ever sees the document, which
+    // is what stops the flash of the wrong theme on a cold load
     <html
       lang="en"
-      className={cn("h-full", "antialiased", michroma.variable, quicksand.variable)}
+      suppressHydrationWarning
+      className={cn(
+        "h-full",
+        bricolage.variable,
+        manrope.variable,
+        geistMono.variable
+      )}
     >
-      <body className="min-h-full flex flex-col bg-[color:var(--color-ink)] text-white">
-        <Preloader />
-        <ParticleField />
-        <SmoothScrollProvider>
+      <body className="min-h-full flex flex-col antialiased">
+        <ThemeProvider>
+          <ContactDialogProvider>
+          <BlobCursor />
+          <a
+            href="#main"
+            className="glass-card sr-only rounded-full focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:px-4 focus:py-2 focus:text-sm"
+          >
+            Skip to content
+          </a>
           <Navbar />
-          <main className="relative z-10 flex-1">{children}</main>
+          <main id="main" className="relative flex-1">
+            {children}
+          </main>
           <Footer />
-        </SmoothScrollProvider>
+          </ContactDialogProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

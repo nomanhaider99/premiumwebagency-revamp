@@ -1,45 +1,48 @@
-import AnimateIn from "@/components/AnimateIn";
+import Reveal from "@/components/motion/Reveal";
+import CircuitLines from "@/components/motif/CircuitLines";
 
 type PageHeroProps = {
   eyebrow: string;
   title: React.ReactNode;
   description: string;
+  actions?: React.ReactNode;
 };
 
-export default function PageHero({ eyebrow, title, description }: PageHeroProps) {
+/** Inner-page counterpart to the home hero — same light, sized down. */
+export default function PageHero({
+  eyebrow,
+  title,
+  description,
+  actions,
+}: PageHeroProps) {
   return (
-    <section className="relative overflow-hidden bg-[color:var(--color-ink)] pt-40 pb-20 text-white">
-      <div className="noise-overlay" />
-      <div
-        className="pointer-events-none absolute -top-40 right-[-10%] h-[28rem] w-[28rem] rounded-full opacity-30 blur-3xl"
-        style={{
-          background:
-            "radial-gradient(circle, var(--color-primary) 0%, transparent 70%)",
-        }}
-      />
-      <div
-        className="pointer-events-none absolute bottom-[-14rem] left-[-8%] h-[24rem] w-[24rem] rounded-full opacity-20 blur-3xl"
-        style={{
-          background:
-            "radial-gradient(circle, var(--color-sky) 0%, transparent 70%)",
-        }}
-      />
-      <div className="container-px relative">
-        <AnimateIn>
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 px-4 py-1.5 font-[family-name:var(--font-alt)] text-sm text-[color:var(--color-sky)]">
+    <section className="relative overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-20">
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="aurora absolute inset-x-0 top-0 h-[26rem]" />
+        <CircuitLines className="mask-fade-b absolute inset-x-0 top-0 h-[22rem] w-full" />
+      </div>
+
+      <div className="container-px flex flex-col items-center text-center">
+        <Reveal>
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--text-muted)]">
             {eyebrow}
-          </span>
-        </AnimateIn>
-        <AnimateIn delay={0.1}>
-          <h1 className="mt-6 max-w-3xl font-[family-name:var(--font-display)] text-4xl font-bold leading-[1.08] tracking-wide text-balance sm:text-5xl lg:text-6xl">
+          </p>
+        </Reveal>
+        <Reveal delay={0.06}>
+          <h1 className="mt-5 max-w-3xl text-[2.1rem] leading-[1.08] text-balance sm:text-[2.7rem] lg:text-[3.1rem]">
             {title}
           </h1>
-        </AnimateIn>
-        <AnimateIn delay={0.2}>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70">
+        </Reveal>
+        <Reveal delay={0.12}>
+          <p className="mt-6 max-w-2xl text-[15px] leading-relaxed">
             {description}
           </p>
-        </AnimateIn>
+        </Reveal>
+        {actions && (
+          <Reveal delay={0.18} className="mt-9 flex flex-wrap justify-center gap-3">
+            {actions}
+          </Reveal>
+        )}
       </div>
     </section>
   );

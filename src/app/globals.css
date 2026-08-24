@@ -4,152 +4,105 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ─────────────────────────────────────────────────────────────
+   Tokens — AI-glass, dark and light.
+
+   Signal Teal reads network; Circuit Violet reads intelligence. They
+   are only ever used together as a gradient pair, never as a flat
+   fill — that pairing is the one signature choice in the system.
+   ───────────────────────────────────────────────────────────── */
+
 :root {
-  --color-ink: #0b1f2d;
-  --color-surface: #0f2536;
-  --color-primary: #0099ff;
-  --color-sky: #45c8ca;
-  --color-white: #ffffff;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --bg: #f6f9f8;
+  --bg-deep: #eef4f2; /* the slightly lower plane behind glass */
+  --surface: rgba(255, 255, 255, 0.62);
+  --surface-solid: #ffffff;
+  --border: rgba(10, 20, 18, 0.08);
+  --border-strong: rgba(10, 20, 18, 0.16);
+  --text: #0b1512;
+  --text-muted: #56655f;
+  --signal: #0fb88a;
+  --circuit: #6a4fe0;
+
+  /* Signal Teal is a surface and glow colour, not a text colour: at 2.4:1 on
+     the light canvas it fails badly as a label. `--signal-ink` is the darkened
+     teal used anywhere the accent has to be read as words. */
+  --signal-ink: #08795a;
+
+  /* derived: the glow and the traces have to change weight between
+     themes or the light theme reads as a dirty smudge */
+  --glow: rgba(15, 184, 138, 0.14);
+  --trace: rgba(10, 20, 18, 0.1);
+  --grid-dot: rgba(10, 20, 18, 0.07);
+  --scrim: rgba(255, 255, 255, 0.72);
+
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #05080a;
+  --bg-deep: #040708;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-solid: #0b1114;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --text: #eaf6f2;
+  --text-muted: #8ca39b;
+  --signal: #17f1b0;
+  --circuit: #7c5cfc;
+  /* on near-black the accent is already 13.6:1, so it reads as-is */
+  --signal-ink: #17f1b0;
+
+  --glow: rgba(23, 241, 176, 0.08);
+  --trace: rgba(234, 246, 242, 0.12);
+  --grid-dot: rgba(234, 246, 242, 0.08);
+  --scrim: rgba(5, 8, 10, 0.68);
+
+  color-scheme: dark;
 }
 
 @theme inline {
-  --color-ink: var(--color-ink);
-  --color-surface: var(--color-surface);
-  --color-primary: var(--color-primary);
-  --color-sky: var(--color-sky);
+  --color-bg: var(--bg);
+  --color-bg-deep: var(--bg-deep);
+  --color-surface: var(--surface);
+  --color-surface-solid: var(--surface-solid);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-signal: var(--signal);
+  --color-signal-ink: var(--signal-ink);
+  --color-circuit: var(--circuit);
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body-face);
+  --font-mono: var(--font-mono-face);
+  --font-display: var(--font-display-face);
 
-  --font-sans: var(--font-quicksand);
-  --font-display: var(--font-michroma);
-  --font-alt: var(--font-quicksand);
-
-  --animate-marquee: marquee 32s linear infinite;
-  --animate-float: float 6s ease-in-out infinite;
-
-  @keyframes marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
-
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-14px);
-    }
-  }
-
-  --font-heading: var(--font-sans);
-
-  --color-sidebar-ring: var(--sidebar-ring);
-
-  --color-sidebar-border: var(--sidebar-border);
-
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-
-  --color-sidebar-accent: var(--sidebar-accent);
-
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-
-  --color-sidebar-primary: var(--sidebar-primary);
-
-  --color-sidebar-foreground: var(--sidebar-foreground);
-
-  --color-sidebar: var(--sidebar);
-
-  --color-chart-5: var(--chart-5);
-
-  --color-chart-4: var(--chart-4);
-
-  --color-chart-3: var(--chart-3);
-
-  --color-chart-2: var(--chart-2);
-
-  --color-chart-1: var(--chart-1);
-
-  --color-ring: var(--ring);
-
-  --color-input: var(--input);
-
+  /* shadcn bridge */
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --color-card: var(--surface-solid);
+  --color-card-foreground: var(--text);
+  --color-popover: var(--surface-solid);
+  --color-popover-foreground: var(--text);
+  --color-primary: var(--signal);
+  --color-primary-foreground: #04100c;
+  --color-secondary: var(--bg-deep);
+  --color-secondary-foreground: var(--text);
+  --color-muted: var(--bg-deep);
+  --color-muted-foreground: var(--text-muted);
+  --color-accent: var(--bg-deep);
+  --color-accent-foreground: var(--text);
+  --color-destructive: #f4482c;
   --color-border: var(--border);
+  --color-input: var(--border-strong);
+  --color-ring: var(--signal);
 
-  --color-destructive: var(--destructive);
-
-  --color-accent-foreground: var(--accent-foreground);
-
-  --color-accent: var(--accent);
-
-  --color-muted-foreground: var(--muted-foreground);
-
-  --color-muted: var(--muted);
-
-  --color-secondary-foreground: var(--secondary-foreground);
-
-  --color-secondary: var(--secondary);
-
-  --color-primary-foreground: var(--primary-foreground);
-
-  --color-popover-foreground: var(--popover-foreground);
-
-  --color-popover: var(--popover);
-
-  --color-card-foreground: var(--card-foreground);
-
-  --color-card: var(--card);
-
-  --radius-sm: calc(var(--radius) * 0.6);
-
-  --radius-md: calc(var(--radius) * 0.8);
-
-  --radius-lg: var(--radius);
-
-  --radius-xl: calc(var(--radius) * 1.4);
-
-  --radius-2xl: calc(var(--radius) * 1.8);
-
-  --radius-3xl: calc(var(--radius) * 2.2);
-
-  --radius-4xl: calc(var(--radius) * 2.6)
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
 }
 
 html {
@@ -157,94 +110,257 @@ html {
 }
 
 body {
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: var(--color-primary);
-  color: var(--color-white);
+  background: color-mix(in srgb, var(--signal) 30%, transparent);
+  color: var(--text);
 }
 
-/* thin, brand-tinted scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-ink);
+  background: var(--bg-deep);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
+  background: color-mix(in srgb, var(--signal) 45%, var(--bg-deep));
   border-radius: 999px;
-  border: 2px solid var(--color-ink);
+  border: 3px solid var(--bg-deep);
 }
 
-.process-node.is-active {
-  border-color: var(--color-primary);
-  background: var(--color-primary);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 20%, transparent);
+:root {
+  --gutter: 1.25rem;
 }
-
-.process-node.is-active > span {
-  background: white;
+@media (min-width: 1024px) {
+  :root {
+    --gutter: 2.5rem;
+  }
+}
+@media (min-width: 1536px) {
+  :root {
+    --gutter: 4rem;
+  }
 }
 
 .container-px {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
-
-@media (min-width: 1024px) {
-  .container-px {
-    padding-left: 4rem;
-    padding-right: 4rem;
-  }
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 88rem;
 }
 
 .text-balance {
   text-wrap: balance;
 }
 
-.noise-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.035;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+/* keyboard focus has to survive on glass in both themes */
+:where(a, button, [role="button"], summary, input, textarea):focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+/* ─────────────────────────────────────────────────────────────
+   Glass — two intensities, deliberately. A third tier is how a
+   glass system turns to mud.
+   ───────────────────────────────────────────────────────────── */
+
+@utility glass-quiet {
+  background: var(--surface);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--border);
+}
+
+@utility glass-card {
+  background: var(--surface);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 8px 40px var(--glow);
+}
+
+/* Text sitting directly on blurred glass loses contrast as whatever is
+   behind it changes. A scrim under the copy fixes that without adding
+   more blur, which would only make the panel muddier. */
+@utility glass-scrim {
+  background: var(--scrim);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   The teal → violet pair
+   ───────────────────────────────────────────────────────────── */
+
+@utility gradient-text {
+  background-image: linear-gradient(
+    100deg,
+    var(--signal) 0%,
+    var(--circuit) 100%
+  );
+  background-size: 160% 100%;
+  background-position: 0% 50%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* one pan on load, then it stops — a looping shimmer on a headline is
+   the single clearest tell of a templated page */
+.gradient-text-pan {
+  animation: gradient-pan 1100ms cubic-bezier(0.22, 1, 0.36, 1) 120ms both;
+}
+
+@keyframes gradient-pan {
+  from {
+    background-position: 100% 50%;
+  }
+  to {
+    background-position: 0% 50%;
+  }
+}
+
+@utility gradient-rule {
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--signal) 30%,
+    var(--circuit) 70%,
+    transparent 100%
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Motifs
+   ───────────────────────────────────────────────────────────── */
+
+/* the hexagon every stack and service chip is cut from */
+.hex-clip {
+  clip-path: polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0% 50%);
+}
+
+/* dot-grid texture behind the AI delivery band */
+.grid-texture {
+  background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.mask-fade-b {
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+}
+
+.mask-fade-x {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 10%,
+    #000 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 10%,
+    #000 90%,
+    transparent 100%
+  );
+}
+
+/* the pooled light behind the hero and the hub */
+.aurora {
+  background:
+    radial-gradient(42% 46% at 22% 18%, color-mix(in srgb, var(--signal) 22%, transparent) 0%, transparent 70%),
+    radial-gradient(38% 42% at 78% 26%, color-mix(in srgb, var(--circuit) 24%, transparent) 0%, transparent 72%);
+  filter: blur(28px);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Circuit traces — dashes drift so the lines read as data moving
+   ───────────────────────────────────────────────────────────── */
+
+.circuit-trace {
+  stroke: var(--trace);
+  stroke-width: 1;
+  fill: none;
+}
+
+.circuit-flow {
+  stroke: url(#circuit-gradient);
+  stroke-width: 1.4;
+  fill: none;
+  stroke-dasharray: 6 220;
+  animation: circuit-drift 14s linear infinite;
+}
+
+@keyframes circuit-drift {
+  to {
+    stroke-dashoffset: -452;
+  }
+}
+
+/* the nav's live dot */
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+}
+
+.status-dot {
+  animation: status-pulse 2.4s ease-in-out infinite;
+}
+
+/* the hub's connector draw-on, and the gentle float of its nodes */
+@keyframes hub-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes hub-float {
+  from {
+    transform: translateY(calc(var(--float, 6px) * -1));
+  }
+  to {
+    transform: translateY(var(--float, 6px));
+  }
+}
+
+.hub-node {
+  animation: hub-float var(--float-dur, 4s) ease-in-out infinite alternate;
+  animation-delay: var(--float-delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* a static end state, not a faster animation */
+  .circuit-flow,
+  .status-dot,
+  .hub-node,
+  .gradient-text-pan {
+    animation: none !important;
+  }
+
+  .circuit-flow {
+    stroke-dasharray: none;
+    opacity: 0.5;
+  }
 }
 
 @layer base {
@@ -254,7 +370,20 @@ body {
   body {
     @apply bg-background text-foreground;
   }
-  html {
-    @apply font-sans;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display-face), system-ui, sans-serif;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  p,
+  li,
+  dd,
+  blockquote {
+    color: var(--text-muted);
   }
 }

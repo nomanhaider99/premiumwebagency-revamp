@@ -2,29 +2,26 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { gsap } from "@/lib/gsap";
-import ServicesMegaMenu from "@/components/ServicesMegaMenu";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import ThemeToggle from "@/components/ThemeToggle";
+import StatusPill from "@/components/motif/StatusPill";
+import ContactCTA from "@/components/motif/ContactCTA";
+import { PRIMARY_NAV, SITE } from "@/data/site";
 
-const links = [
-  { href: "/", label: "Home" },
-  { href: "/services", label: "Services" },
-  { href: "/work", label: "Work" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-];
-
-const MD_BREAKPOINT = 768;
-
+/**
+ * A floating glass pill rather than a full-width bar: it sits inset from the
+ * top with a gutter either side, and tightens and deepens its glass once the
+ * page has scrolled under it. Order along the row matches the reference —
+ * links, then the status pill, then the CTA, with the theme toggle last.
+ */
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const menuRef = useRef<HTMLDivElement | null>(null);
-  const sizerRef = useRef<HTMLDivElement | null>(null);
-  const [pillWidth, setPillWidth] = useState<number | undefined>(undefined);
+  const still = useReducedMotion();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -34,177 +31,119 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
-  useLayoutEffect(() => {
-    const sizer = sizerRef.current;
-    if (!sizer) return;
-
-    const update = () => {
-      if (window.innerWidth < MD_BREAKPOINT) {
-        setPillWidth(undefined);
-        return;
-      }
-      const natural = sizer.offsetWidth + 2;
-      const wide = Math.min(window.innerWidth * 0.92, 1152);
-      setPillWidth(scrolled ? Math.max(wide, natural) : natural);
-    };
-
-    update();
-    const ro = new ResizeObserver(update);
-    ro.observe(sizer);
-    window.addEventListener("resize", update);
+    document.body.style.overflow = open ? "hidden" : "";
     return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", update);
+      document.body.style.overflow = "";
     };
-  }, [scrolled]);
-
-  useEffect(() => {
-    const el = menuRef.current;
-    if (!el) return;
-    if (open) {
-      gsap.set(el, { display: "flex" });
-      gsap.fromTo(
-        el,
-        { opacity: 0, y: -12 },
-        { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }
-      );
-      gsap.fromTo(
-        el.querySelectorAll("a"),
-        { opacity: 0, y: -8 },
-        { opacity: 1, y: 0, duration: 0.35, stagger: 0.06, delay: 0.05, ease: "power2.out" }
-      );
-    } else {
-      gsap.to(el, {
-        opacity: 0,
-        y: -12,
-        duration: 0.25,
-        ease: "power2.in",
-        onComplete: () => gsap.set(el, { display: "none" }),
-      });
-    }
   }, [open]);
 
-  const navContent = (
-    <>
-      <Link href="/" className="flex items-center">
-        <Image
-          src="/logo.webp"
-          alt="Premium Web Agency"
-          width={180}
-          height={61}
-          priority
-          className="h-9 w-auto"
-        />
-      </Link>
-
-      <div className="hidden md:flex h-full shrink-0 items-center gap-7 whitespace-nowrap">
-        {links.map((link) => {
-          const active = pathname === link.href;
-
-          if (link.href === "/services") {
-            return <ServicesMegaMenu key={link.href} active={active} />;
-          }
-
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`relative text-sm font-semibold transition-colors group ${
-                active
-                  ? "text-[color:var(--color-ink)]"
-                  : "text-[color:var(--color-ink)]/80 hover:text-[color:var(--color-ink)]"
-              }`}
-            >
-              {link.label}
-              <span
-                className={`absolute -bottom-1 left-0 h-[2px] bg-[color:var(--color-primary)] transition-all duration-300 ${
-                  active ? "w-full" : "w-0 group-hover:w-full"
-                }`}
-              />
-            </Link>
-          );
-        })}
-      </div>
-
-      <div className="hidden md:block shrink-0">
-        <Link
-          href="/contact"
-          className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-[color:var(--color-ink)] px-4 py-2 text-sm font-medium text-white transition-all hover:bg-[color:var(--color-primary)] hover:shadow-lg hover:shadow-[color:var(--color-primary)]/30"
-        >
-          Start a project
-        </Link>
-      </div>
-
-      <button
-        aria-label="Toggle menu"
-        onClick={() => setOpen((v) => !v)}
-        className="md:hidden relative h-10 w-10 flex flex-col items-center justify-center gap-1.5"
-      >
-        <span
-          className={`block h-0.5 w-6 bg-[color:var(--color-ink)] transition-transform duration-300 ${
-            open ? "translate-y-2 rotate-45" : ""
-          }`}
-        />
-        <span
-          className={`block h-0.5 w-6 bg-[color:var(--color-ink)] transition-opacity duration-300 ${
-            open ? "opacity-0" : "opacity-100"
-          }`}
-        />
-        <span
-          className={`block h-0.5 w-6 bg-[color:var(--color-ink)] transition-transform duration-300 ${
-            open ? "-translate-y-2 -rotate-45" : ""
-          }`}
-        />
-      </button>
-    </>
-  );
-
   return (
-    <header className="fixed inset-x-0 top-3 z-50 flex flex-col items-center px-4 transition-all duration-300">
-      {/* invisible twin, used only to measure the pill's natural content width */}
-      <div
-        ref={sizerRef}
-        aria-hidden
-        className="invisible absolute left-0 top-0 inline-flex h-16 items-center gap-6 border border-transparent pl-6 pr-3 md:gap-8 md:pr-4"
-      >
-        {navContent}
-      </div>
-
-      <nav
-        style={pillWidth ? { width: `${pillWidth}px` } : undefined}
-        className={`inline-flex h-16 items-center gap-6 border border-black/10 bg-white/90 py-2 backdrop-blur-xl transition-all duration-300 md:gap-8 ${
-          scrolled
-            ? "rounded-2xl pl-10 pr-8 shadow-[0_12px_40px_rgba(0,0,0,0.2)] md:pr-9 md:justify-between"
-            : "rounded-full pl-6 pr-3 shadow-[0_8px_32px_rgba(0,0,0,0.15)] md:pr-4"
-        }`}
-      >
-        {navContent}
-      </nav>
-
-      <div
-        ref={menuRef}
-        className="md:hidden hidden w-[min(90vw,20rem)] flex-col gap-1 rounded-2xl mt-2 bg-white/95 backdrop-blur-md px-6 pb-6 pt-2 shadow-lg border border-black/10"
-        style={{ display: "none" }}
-      >
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className="py-3 text-base font-medium text-[color:var(--color-ink)] border-b border-black/10 last:border-none"
-          >
-            {link.label}
-          </Link>
-        ))}
-        <Link
-          href="/contact"
-          className="mt-4 inline-flex items-center justify-center rounded-full bg-[color:var(--color-ink)] px-5 py-3 text-sm font-medium text-white"
+    <header className="fixed inset-x-0 top-0 z-50 pt-3 lg:pt-5">
+      <div className="container-px">
+        <div
+          className={`flex items-center gap-4 rounded-full px-4 transition-all duration-300 lg:px-6 ${
+            scrolled
+              ? "glass-quiet h-14 shadow-[0_8px_40px_var(--glow)]"
+              : "h-16 border border-transparent"
+          }`}
         >
-          Start a project
-        </Link>
+          <Link
+            href="/"
+            aria-label={SITE.name}
+            className="flex shrink-0 items-center"
+            onClick={() => setOpen(false)}
+          >
+            <Image
+              src="/logo.webp"
+              alt={SITE.name}
+              width={180}
+              height={61}
+              priority
+              className="h-7 w-auto dark:brightness-0 dark:invert"
+            />
+          </Link>
+
+          <nav className="ml-6 hidden items-center gap-7 lg:flex">
+            {PRIMARY_NAV.map((link) => {
+              const active = pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`relative text-[13px] transition-colors duration-200 ${
+                    active
+                      ? "text-[color:var(--text)]"
+                      : "text-[color:var(--text-muted)] hover:text-[color:var(--text)]"
+                  }`}
+                >
+                  {link.label}
+                  {active && (
+                    <span
+                      aria-hidden
+                      className="gradient-rule absolute -bottom-1.5 left-0 h-px w-full"
+                    />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="ml-auto flex items-center gap-3">
+            <span className="hidden xl:block">
+              <StatusPill>Replies within 1 business day</StatusPill>
+            </span>
+            <span className="hidden sm:block">
+              <ContactCTA className="h-9 px-5" />
+            </span>
+            <ThemeToggle />
+            <button
+              type="button"
+              aria-label="Toggle menu"
+              aria-expanded={open}
+              onClick={() => setOpen((v) => !v)}
+              className="glass-quiet flex h-9 w-9 items-center justify-center rounded-full text-[color:var(--text)] lg:hidden"
+            >
+              {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
+          </div>
+        </div>
       </div>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            key="sheet"
+            initial={still ? false : { opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={still ? { opacity: 0 } : { opacity: 0, y: -8 }}
+            transition={{ type: "spring", stiffness: 200, damping: 26 }}
+            className="fixed inset-x-0 top-[4.75rem] bottom-0 lg:hidden"
+            style={{ background: "var(--bg)" }}
+          >
+            <div className="container-px flex h-full flex-col justify-between py-8">
+              <nav className="flex flex-col">
+                {PRIMARY_NAV.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className="border-b border-[color:var(--border)] py-4 text-[1.35rem] text-[color:var(--text)]"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+
+              <div className="flex flex-col gap-4">
+                <StatusPill className="self-start">
+                  Replies within 1 business day
+                </StatusPill>
+                <ContactCTA className="w-full" />
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

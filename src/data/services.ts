@@ -271,4 +271,66 @@ export const services: Service[] = [
       },
     ],
   },
+  {
+    id: "ai",
+    number: "09",
+    title: "AI Engineering",
+    tagline: "Products that think, work that compounds",
+    description:
+      "AI built into what you ship and how you run — from customer-facing copilots and semantic search to the automations that take busywork off your team.",
+    features: [
+      "AI product features & copilots",
+      "Semantic search & recommendations",
+      "Workflow & content automation",
+      "AI-assisted design and build delivery",
+    ],
+    faqs: [
+      {
+        question: "How does AI actually grow our business?",
+        answer:
+          "Three ways, and we scope which one fits before writing any code. It removes manual work through automation — lead triage, content pipelines, support deflection. It sharpens decisions by making your own data searchable and summarised. And it makes your product genuinely better, through features like copilots, semantic search, and recommendations that would be impractical to build by hand.",
+      },
+      {
+        question: "Do we need our own data or models to start?",
+        answer:
+          "No. Most engagements start on top of existing foundation models with your content and data layered in via retrieval, which is faster and far cheaper than training anything custom. If a fine-tuned or self-hosted model turns out to be the right call later, we'll tell you — and why.",
+      },
+      {
+        question: "Do you use AI on our project even if we don't buy an AI service?",
+        answer:
+          "Yes, in delivery. We use AI to move faster through research, scaffolding, and QA on every build. That shows up as shorter timelines rather than a line item — the design judgement, architecture, and review are still done by the team.",
+      },
+    ],
+  },
+  {
+    id: "blockchain",
+    number: "10",
+    title: "Blockchain & Web3",
+    tagline: "On-chain products, built to be trusted",
+    description:
+      "Smart contracts, wallet-native flows, and on-chain applications engineered with the same rigour as the rest of our work — readable, audited, and built to survive real usage.",
+    features: [
+      "Smart contract design & development",
+      "Wallet connection & on-chain UX",
+      "Token and NFT infrastructure",
+      "dApp front-ends & chain integrations",
+    ],
+    faqs: [
+      {
+        question: "Which chains do you build on?",
+        answer:
+          "Primarily EVM-compatible chains, since that's where the tooling, auditing ecosystem, and user base are deepest. We'll recommend a chain based on your users, cost per transaction, and where your liquidity or community already is — not on what's fashionable.",
+      },
+      {
+        question: "Do you audit the contracts you write?",
+        answer:
+          "We write contracts to be auditable and test them thoroughly, but we don't mark our own homework on anything holding real value. For production deployments we coordinate an independent third-party audit and handle the remediation work that comes back.",
+      },
+      {
+        question: "Does our project actually need a blockchain?",
+        answer:
+          "Often not, and we'll say so. Blockchain earns its place when you need verifiable ownership, trustless settlement, or shared state between parties who don't trust each other. If a conventional database does the job, that's the honest recommendation — and the cheaper one.",
+      },
+    ],
+  },
 ];

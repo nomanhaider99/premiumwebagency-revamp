@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
-import AnimateIn from "@/components/AnimateIn";
-import StatCounter from "@/components/StatCounter";
-import MagneticButton from "@/components/MagneticButton";
+import SectionHeading from "@/components/SectionHeading";
+import Reveal, { RevealItem } from "@/components/motion/Reveal";
+import PillButton from "@/components/motif/PillButton";
+import CapabilityHub from "@/components/CapabilityHub";
+import CTABand from "@/components/sections/CTABand";
+import { DIFFERENTIATORS } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "About — Premium Web Agency",
@@ -33,6 +36,13 @@ const values = [
   },
 ];
 
+const STATS = [
+  ["120+", "Projects delivered"],
+  ["40+", "Brands trusted us"],
+  ["98%", "Client retention"],
+  ["12+", "Years combined expertise"],
+] as const;
+
 export default function AboutPage() {
   return (
     <>
@@ -41,94 +51,124 @@ export default function AboutPage() {
         title={
           <>
             A studio built for brands who refuse to look{" "}
-            <span className="text-[color:var(--color-primary)]">average.</span>
+            <span className="gradient-text">average.</span>
           </>
         }
         description="Premium Web Agency is a boutique team of designers, engineers, and strategists who believe your website should be your hardest-working asset — not your biggest compromise."
+        actions={
+          <>
+            <PillButton href="/contact">Get in touch</PillButton>
+            <PillButton href="/work" tone="glass">
+              See our work
+            </PillButton>
+          </>
+        }
       />
 
-      <section className="py-16 lg:py-24">
-        <div className="container-px grid gap-16 lg:grid-cols-2 lg:gap-24">
-          <AnimateIn>
-            <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
-              Our story
-            </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-white sm:text-4xl">
-              We started this studio because most agencies make you choose.
-            </h2>
-            <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-white/65">
+      {/* our story */}
+      <section className="container-px py-16 lg:py-24">
+        <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
+          <div>
+            <SectionHeading
+              eyebrow="Our story"
+              title={
+                <>
+                  We started this studio because most agencies{" "}
+                  <span className="gradient-text">make you choose.</span>
+                </>
+              }
+            />
+            <Reveal delay={0.06} className="mt-6 space-y-4 text-[14px] leading-relaxed">
               <p>
                 Design shops that ignore performance. Dev shops that ignore
-                brand. Marketing agencies that inherit a site they had no
-                hand in building. We built Premium Web Agency to close that
-                gap — one team responsible for how your brand looks, works,
-                and grows.
+                brand. Marketing agencies that inherit a site they had no hand
+                in building. We built Premium Web Agency to close that gap — one
+                team responsible for how your brand looks, works, and grows.
               </p>
               <p>
-                Today we partner with founders, marketing leaders, and
-                operators who need a site that carries real weight: fast,
-                distinctive, and built to convert traffic into revenue.
+                Today we partner with founders, marketing leaders, and operators
+                who need a site that carries real weight: fast, distinctive, and
+                built to convert traffic into revenue.
               </p>
-            </div>
-          </AnimateIn>
+            </Reveal>
 
-          <AnimateIn delay={0.15} stagger className="grid grid-cols-2 gap-8 content-start">
-            <StatCounter value={120} suffix="+" label="Projects delivered" />
-            <StatCounter value={40} suffix="+" label="Brands trusted us" />
-            <StatCounter value={98} suffix="%" label="Client retention" />
-            <StatCounter value={12} suffix="+" label="Years combined expertise" />
-          </AnimateIn>
+            <Reveal stagger delay={0.1} className="mt-10 grid grid-cols-2 gap-4">
+              {STATS.map(([value, label]) => (
+                <RevealItem key={label}>
+                  <div className="glass-card p-5">
+                    <p className="font-mono text-[1.5rem] leading-none text-[color:var(--text)]">
+                      {value}
+                    </p>
+                    <p className="mt-2.5 font-mono text-[9px] uppercase tracking-[0.14em]">
+                      {label}
+                    </p>
+                  </div>
+                </RevealItem>
+              ))}
+            </Reveal>
+          </div>
+
+          <CapabilityHub />
         </div>
       </section>
 
-      <section className="bg-[color:var(--color-surface)]/50 py-16 lg:py-24">
-        <div className="container-px">
-          <AnimateIn className="max-w-2xl">
-            <span className="font-[family-name:var(--font-alt)] text-sm font-medium uppercase tracking-widest text-[color:var(--color-primary)]">
-              What we believe
-            </span>
-            <h2 className="mt-4 font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-white sm:text-4xl">
-              The principles behind every project.
-            </h2>
-          </AnimateIn>
-
-          <AnimateIn stagger className="mt-16 grid gap-6 sm:grid-cols-2">
-            {values.map((v, i) => (
-              <div
-                key={v.title}
-                className="rounded-3xl border border-white/10 bg-white/[0.03] p-8"
-              >
-                <span className="font-[family-name:var(--font-alt)] text-sm text-white/35">
-                  0{i + 1}
-                </span>
-                <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl font-semibold tracking-wide text-white">
-                  {v.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-white/60">
-                  {v.description}
-                </p>
+      {/* what we believe */}
+      <section className="container-px py-16 lg:py-24">
+        <SectionHeading
+          eyebrow="What we believe"
+          title={
+            <>
+              The principles behind{" "}
+              <span className="gradient-text">every project.</span>
+            </>
+          }
+        />
+        <Reveal stagger className="mt-12 grid gap-5 sm:grid-cols-2">
+          {values.map((v) => (
+            <RevealItem key={v.title} className="h-full">
+              <div className="glass-card h-full p-7">
+                <h3 className="text-[1.1rem]">{v.title}</h3>
+                <p className="mt-3 text-[13px] leading-relaxed">{v.description}</p>
               </div>
-            ))}
-          </AnimateIn>
-        </div>
+            </RevealItem>
+          ))}
+        </Reveal>
       </section>
 
-      <section className="relative overflow-hidden bg-[color:var(--color-ink)] py-16 text-center text-white lg:py-24">
-        <div className="noise-overlay" />
-        <div className="container-px relative">
-          <AnimateIn>
-            <h2 className="mx-auto max-w-2xl font-[family-name:var(--font-display)] text-3xl font-bold tracking-wide text-balance sm:text-4xl lg:text-5xl">
-              Want to see if we&apos;re the right fit?
-            </h2>
-          </AnimateIn>
-          <AnimateIn delay={0.15} className="mt-10 flex justify-center">
-            <MagneticButton href="/contact" variant="light">
-              Get in touch
-              <span aria-hidden>→</span>
-            </MagneticButton>
-          </AnimateIn>
-        </div>
+      {/* differentiators */}
+      <section className="container-px py-16 lg:py-24">
+        <SectionHeading
+          eyebrow="Why choose us"
+          title={
+            <>
+              What you actually get{" "}
+              <span className="gradient-text">working with us.</span>
+            </>
+          }
+        />
+        <Reveal stagger className="mt-12 grid gap-5 md:grid-cols-3">
+          {DIFFERENTIATORS.map((card) => (
+            <RevealItem key={card.title} className="h-full">
+              <div className="glass-card h-full p-7">
+                <h3 className="text-[1.1rem] leading-snug">{card.title}</h3>
+                <p className="mt-4 text-[13px] leading-relaxed">{card.body}</p>
+              </div>
+            </RevealItem>
+          ))}
+        </Reveal>
       </section>
+
+      <CTABand
+        eyebrow="Let's talk"
+        title={
+          <>
+            Want to see if we&apos;re the{" "}
+            <span className="gradient-text">right fit?</span>
+          </>
+        }
+        ctaLabel="Get in touch"
+        secondary={{ label: "See our work", href: "/work" }}
+      />
     </>
   );
 }
