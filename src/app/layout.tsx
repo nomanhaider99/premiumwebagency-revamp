@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ThemeProvider from "@/components/ThemeProvider";
 import ContactDialogProvider from "@/components/ContactDialog";
+import AgentDialogProvider from "@/components/agent/AgentDialog";
 import BlobCursor from "@/components/motif/BlobCursor";
 import { cn } from "@/lib/utils";
 
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col antialiased">
         <ThemeProvider>
           <ContactDialogProvider>
+          <AgentDialogProvider>
           <BlobCursor />
           <a
             href="#main"
@@ -69,6 +71,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             {children}
           </main>
           <Footer />
+          </AgentDialogProvider>
           </ContactDialogProvider>
         </ThemeProvider>
       </body>

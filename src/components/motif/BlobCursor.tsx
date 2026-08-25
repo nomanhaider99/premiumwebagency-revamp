@@ -52,6 +52,31 @@ type BlobCursorProps = {
 
 const REST_RADIUS = "49% 51% 48% 52% / 52% 48% 52% 48%";
 
+/**
+ * What the ball must never sit on top of: anything you read or click.
+ *
+ * Interactive things are matched by selector, prose by asking whether the
+ * hovered element holds text of its own — that catches headings, paragraphs,
+ * list items and labels without naming every tag, and leaves the empty
+ * canvas the effect actually lives on untouched.
+ */
+const INTERACTIVE =
+  "a, button, [role='button'], input, textarea, select, summary, label, [contenteditable]";
+
+function holdsText(el: Element): boolean {
+  for (const node of Array.from(el.childNodes)) {
+    if (node.nodeType === 3 && node.textContent && node.textContent.trim()) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function shouldClear(el: Element | null): boolean {
+  if (!el) return false;
+  return Boolean(el.closest(INTERACTIVE)) || holdsText(el);
+}
+
 /** the marbling inside the body, and the cloudier band around the rim */
 const MARBLE =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008' numOctaves='5' seed='9'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E\")";
@@ -70,6 +95,7 @@ export default function BlobCursor({
   const jellyRef = useRef<HTMLDivElement | null>(null);
   const blobRef = useRef<HTMLDivElement | null>(null);
   const trailRef = useRef<Array<HTMLDivElement | null>>([]);
+  const trailWrapRef = useRef<HTMLDivElement | null>(null);
   const reduced = usePrefersReducedMotion();
 
   useEffect(() => {
@@ -79,7 +105,8 @@ export default function BlobCursor({
     const ball = ballRef.current;
     const jellyEl = jellyRef.current;
     const blob = blobRef.current;
-    if (!ball || !jellyEl || !blob) return;
+    const trailWrap = trailWrapRef.current;
+    if (!ball || !jellyEl || !blob || !trailWrap) return;
 
     const target = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     /** index 0 is the ball; the rest are the trail, in order */
@@ -94,6 +121,10 @@ export default function BlobCursor({
     let wob = 0;
     let phase = 0;
     let idle = false;
+    // how far the glass has cleared out of the way of whatever is under it
+    let clarity = 0;
+    let clarityTarget = 0;
+    let wrote = -1;
 
     const onMove = (e: PointerEvent) => {
       if (!seen) {
@@ -106,6 +137,9 @@ export default function BlobCursor({
       }
       target.x = e.clientX;
       target.y = e.clientY;
+      // the overlay is pointer-events-none, so this is the real element under
+      // the cursor rather than the ball itself
+      clarityTarget = shouldClear(e.target as Element | null) ? 1 : 0;
     };
     const onLeave = () => {
       seen = false;
@@ -148,6 +182,36 @@ export default function BlobCursor({
       });
 
       ball.style.opacity = alpha.toFixed(3);
+
+      /* Glass is lovely over an empty canvas and a liability over a sentence.
+         Rather than thinning the effect everywhere, the ball clears where it
+         would be read through: the blur and the contrast lift come off, the
+         skin drops to a ghost, and the trail gets out of the way entirely.
+         Eased over ~120ms so it reads as glass thinning, not as a flicker. */
+      clarity += (clarityTarget - clarity) * (1 - Math.pow(0.0001, dt));
+      // an ease only approaches its target; snapping the last hundredth is what
+      // lets the filter actually reach `none` instead of parking at 0.03px
+      if (Math.abs(clarityTarget - clarity) < 0.01) clarity = clarityTarget;
+
+      // a backdrop-filter write costs a re-filter of everything behind it, so
+      // it only happens when the value has actually moved
+      if (Math.abs(clarity - wrote) > 0.01) {
+        wrote = clarity;
+        const solid = 1 - clarity;
+        const filter =
+          clarity > 0.99
+            ? "none"
+            : `blur(${(2.4 * solid).toFixed(2)}px) contrast(${(
+                1 + 0.35 * solid
+              ).toFixed(3)}) saturate(${(0.92 + 0.08 * clarity).toFixed(3)})`;
+
+        blob.style.backdropFilter = filter;
+        // Safari still needs the prefix, and it is not in the CSSOM types
+        blob.style.setProperty("-webkit-backdrop-filter", filter);
+        // the body, marbling, rim and inclusion all hang off this
+        blob.style.setProperty("--blob-skin", (1 - 0.8 * clarity).toFixed(3));
+        trailWrap.style.opacity = solid.toFixed(3);
+      }
 
       const speed = Math.hypot(vx, vy);
       const stretch = 1 + Math.min(speed * 0.00013, 0.22);
@@ -222,6 +286,7 @@ export default function BlobCursor({
       {/* the liquid trail: it only really shows while the pointer is moving,
           and collapses under the ball the moment it stops */}
       <div
+        ref={trailWrapRef}
         className="pointer-events-none absolute inset-0 overflow-hidden"
         style={{ filter: `url(#${filterId})` }}
       >
@@ -281,6 +346,9 @@ export default function BlobCursor({
               className="absolute inset-0"
               style={{
                 borderRadius: "inherit",
+                // every skin layer rides `--blob-skin`, which the loop drops
+                // to a ghost wherever the ball is covering something readable
+                opacity: "var(--blob-skin, 1)",
                 background:
                   "radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--text) 0.8%, transparent) 0%, color-mix(in srgb, var(--text) 1.2%, transparent) 55%, color-mix(in srgb, var(--text) 9%, transparent) 92%, color-mix(in srgb, var(--text) 5%, transparent) 100%)",
               }}
@@ -290,7 +358,7 @@ export default function BlobCursor({
             <div
               className="absolute inset-[-18%] mix-blend-overlay"
               style={{
-                opacity: 0.13,
+                opacity: "calc(0.13 * var(--blob-skin, 1))",
                 backgroundImage: MARBLE,
                 backgroundSize: "cover",
               }}
@@ -301,6 +369,7 @@ export default function BlobCursor({
               className="absolute inset-0"
               style={{
                 borderRadius: "inherit",
+                opacity: "var(--blob-skin, 1)",
                 boxShadow:
                   "inset 0 0 0 1px color-mix(in srgb, var(--text) 10%, transparent)," +
                   "inset 10px 14px 34px color-mix(in srgb, var(--text) 7%, transparent)," +
@@ -312,6 +381,7 @@ export default function BlobCursor({
             <span
               className="absolute left-1/2 top-1/2 h-[11px] w-[11px] -translate-x-1/2 -translate-y-1/2 rounded-full"
               style={{
+                opacity: "var(--blob-skin, 1)",
                 background:
                   "linear-gradient(180deg, #6d1f22 0%, #6d1f22 48%, #4fb3ad 52%, #4fb3ad 100%)",
                 boxShadow: "0 0 6px rgba(0,0,0,0.55)",

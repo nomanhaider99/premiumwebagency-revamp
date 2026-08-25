@@ -9,6 +9,7 @@ import HeroStage from "@/components/hero3d/HeroStage";
 import PillButton from "@/components/motif/PillButton";
 import ContactCTA from "@/components/motif/ContactCTA";
 import StatusPill from "@/components/motif/StatusPill";
+import HeroAgentTrigger from "@/components/agent/HeroAgentTrigger";
 import { ServiceIcon } from "@/lib/service-icons";
 import { services } from "@/data/services";
 
@@ -136,9 +137,16 @@ export default function Hero() {
             ))}
           </motion.ul>
 
+          {/* the agent sits above the CTA row, not inside it: a fourth pill
+              would disappear into the other three, and this is the one thing
+              on the page that answers back */}
+          <motion.div variants={child} className="mt-8">
+            <HeroAgentTrigger />
+          </motion.div>
+
           <motion.div
             variants={child}
-            className="mt-9 flex flex-wrap items-center gap-3"
+            className="mt-7 flex flex-wrap items-center gap-3"
           >
             <ContactCTA />
             <PillButton href="/work" tone="glass">

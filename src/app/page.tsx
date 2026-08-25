@@ -3,15 +3,12 @@ import TrustedBy from "@/components/sections/TrustedBy";
 import IndustryWork from "@/components/sections/IndustryWork";
 import CapabilityHub from "@/components/CapabilityHub";
 import AIDelivery from "@/components/sections/AIDelivery";
+import WhatWeDo from "@/components/sections/WhatWeDo";
 import CTABand from "@/components/sections/CTABand";
 import SectionHeading from "@/components/SectionHeading";
 import Reveal, { RevealItem } from "@/components/motion/Reveal";
-import ServiceCard from "@/components/ServiceCard";
-import WorkCard from "@/components/WorkCard";
 import FAQAccordion from "@/components/FAQAccordion";
-import PillButton from "@/components/motif/PillButton";
 import { services } from "@/data/services";
-import { projects } from "@/data/projects";
 import { testimonials } from "@/data/testimonials";
 import { DIFFERENTIATORS } from "@/data/site";
 
@@ -44,32 +41,7 @@ export default function Home() {
 
       <IndustryWork />
 
-      {/* what we do */}
-      <section id="services" className="container-px scroll-mt-24 py-20 lg:py-28">
-        <SectionHeading
-          eyebrow="What we do"
-          title={
-            <>
-              One studio.{" "}
-              <span className="gradient-text">Every discipline</span> your brand
-              needs.
-            </>
-          }
-          action={
-            <PillButton href="/services" tone="glass">
-              All services
-            </PillButton>
-          }
-        />
-
-        <Reveal stagger className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => (
-            <RevealItem key={service.id} className="h-full">
-              <ServiceCard service={service} />
-            </RevealItem>
-          ))}
-        </Reveal>
-      </section>
+      <WhatWeDo />
 
       {/* why us */}
       <section className="container-px py-20 lg:py-28">
@@ -96,32 +68,6 @@ export default function Home() {
       </section>
 
       <AIDelivery />
-
-      {/* work */}
-      <section className="container-px py-20 lg:py-28">
-        <SectionHeading
-          eyebrow="Selected work"
-          title={
-            <>
-              Recent projects{" "}
-              <span className="gradient-text">we&apos;re proud of.</span>
-            </>
-          }
-          action={
-            <PillButton href="/work" tone="glass">
-              View all work
-            </PillButton>
-          }
-        />
-
-        <Reveal stagger className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
-            <RevealItem key={project.slug} className="h-full">
-              <WorkCard project={project} />
-            </RevealItem>
-          ))}
-        </Reveal>
-      </section>
 
       {/* client voices */}
       <section className="container-px py-20 lg:py-28">

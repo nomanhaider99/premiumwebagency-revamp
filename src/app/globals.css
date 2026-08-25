@@ -323,6 +323,158 @@ body {
   animation: status-pulse 2.4s ease-in-out infinite;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Option wheel — the services picker. Every option is absolutely
+   centred, then offset along the curve by the component's rAF
+   loop through transform / opacity / filter, so the whole column
+   stays in step.
+   ───────────────────────────────────────────────────────────── */
+
+.option-wheel {
+  --ow-text-color: var(--text-muted);
+  --ow-active-color: var(--text);
+  --ow-font-size: 2rem;
+  --ow-inset: 40px;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  outline: none;
+  /* the ends fade out rather than being cut off by the overflow clip */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 22%,
+    #000 78%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 22%,
+    #000 78%,
+    transparent 100%
+  );
+}
+
+.option-wheel--dragging {
+  cursor: grabbing;
+}
+
+.option-wheel:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
+.option-wheel__item {
+  position: absolute;
+  top: 50%;
+  left: var(--ow-inset);
+  white-space: nowrap;
+  font-family: var(--font-display-face), system-ui, sans-serif;
+  font-size: var(--ow-font-size);
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  transform-origin: left center;
+  cursor: pointer;
+  will-change: transform, opacity, filter;
+  /* --ow-p goes 0 -> 1 as an option approaches the middle of the wheel */
+  color: color-mix(
+    in srgb,
+    var(--ow-active-color) calc(var(--ow-p, 0) * 100%),
+    var(--ow-text-color)
+  );
+}
+
+.option-wheel--right .option-wheel__item {
+  left: auto;
+  right: var(--ow-inset);
+  transform-origin: right center;
+}
+
+.option-wheel__item--selected {
+  font-weight: 500;
+}
+
+/* the accent tick that marks the option the card is showing */
+.option-wheel__item--selected::before {
+  content: "";
+  position: absolute;
+  left: -0.62em;
+  top: 50%;
+  height: 0.5em;
+  width: 3px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--signal), var(--circuit));
+}
+
+.option-wheel--right .option-wheel__item--selected::before {
+  left: auto;
+  right: -0.62em;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   The AI agent — its orb, its lit ring, and its typing dots
+   ───────────────────────────────────────────────────────────── */
+
+/* the halo breathes rather than blinks: an on/off glow on a face reads as a
+   notification badge, and this is meant to read as something alive */
+@keyframes agent-breathe {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.1);
+  }
+}
+
+.agent-orb-halo {
+  animation: agent-breathe 3.6s ease-in-out infinite;
+}
+
+@keyframes agent-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* only while it is thinking — a permanently spinning rim is a loading state */
+.agent-orb-spin {
+  animation: agent-spin 1.4s linear infinite;
+}
+
+.agent-orb-core {
+  animation: agent-breathe 2.6s ease-in-out infinite;
+}
+
+/* the composing indicator */
+@keyframes agent-dot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+.agent-dot {
+  animation: agent-dot 1.1s ease-in-out infinite;
+}
+
 /* the hub's connector draw-on, and the gentle float of its nodes */
 @keyframes hub-draw {
   to {
@@ -353,8 +505,18 @@ body {
   .circuit-flow,
   .status-dot,
   .hub-node,
-  .gradient-text-pan {
+  .gradient-text-pan,
+  .agent-orb-halo,
+  .agent-orb-spin,
+  .agent-orb-core,
+  .agent-dot {
     animation: none !important;
+  }
+
+  /* the dots still have to say "composing", so they hold a legible resting
+     state rather than sitting at the 30% opacity the keyframes start on */
+  .agent-dot {
+    opacity: 0.65;
   }
 
   .circuit-flow {
