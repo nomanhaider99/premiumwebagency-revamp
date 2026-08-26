@@ -5,10 +5,14 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 import StatusPill from "@/components/motif/StatusPill";
 import ContactCTA from "@/components/motif/ContactCTA";
+import ServicesMenu from "@/components/nav/ServicesMenu";
+import HexBadge from "@/components/motif/HexBadge";
+import { ServiceIcon } from "@/lib/service-icons";
+import { services } from "@/data/services";
 import { PRIMARY_NAV, SITE } from "@/data/site";
 
 /**
@@ -19,6 +23,7 @@ import { PRIMARY_NAV, SITE } from "@/data/site";
  */
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const still = useReducedMotion();
@@ -43,9 +48,15 @@ export default function Navbar() {
         <div
           className={`flex items-center gap-4 rounded-full px-4 transition-all duration-300 lg:px-6 ${
             scrolled
-              ? "glass-quiet h-14 shadow-[0_8px_40px_var(--glow)]"
+              ? "h-14 border border-[color:var(--border)] shadow-[0_8px_40px_var(--glow)]"
               : "h-16 border border-transparent"
           }`}
+          /* Once the page is under it the bar has to be opaque, not glass:
+             `--surface` is 4% white in the dark theme, so the copy scrolling
+             beneath was reading straight through the pill. A solid ground also
+             drops the backdrop-filter, which was being recomputed every frame
+             of the scroll for no benefit. */
+          style={scrolled ? { background: "var(--surface-solid)" } : undefined}
         >
           <Link
             href="/"
@@ -63,30 +74,7 @@ export default function Navbar() {
             />
           </Link>
 
-          <nav className="ml-6 hidden items-center gap-7 lg:flex">
-            {PRIMARY_NAV.map((link) => {
-              const active = pathname.startsWith(link.href);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`relative text-[13px] transition-colors duration-200 ${
-                    active
-                      ? "text-[color:var(--text)]"
-                      : "text-[color:var(--text-muted)] hover:text-[color:var(--text)]"
-                  }`}
-                >
-                  {link.label}
-                  {active && (
-                    <span
-                      aria-hidden
-                      className="gradient-rule absolute -bottom-1.5 left-0 h-px w-full"
-                    />
-                  )}
-                </Link>
-              );
-            })}
-          </nav>
+          <ServicesMenu pathname={pathname} scrolled={scrolled} />
 
           <div className="ml-auto flex items-center gap-3">
             <span className="hidden xl:block">
@@ -121,17 +109,108 @@ export default function Navbar() {
             style={{ background: "var(--bg)" }}
           >
             <div className="container-px flex h-full flex-col justify-between py-8">
-              <nav className="flex flex-col">
-                {PRIMARY_NAV.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className="border-b border-[color:var(--border)] py-4 text-[1.35rem] text-[color:var(--text)]"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+              <nav className="flex flex-col overflow-y-auto">
+                {PRIMARY_NAV.map((link) =>
+                  link.href === "/services" ? (
+                    <div
+                      key={link.href}
+                      className="border-b border-[color:var(--border)]"
+                    >
+                      <div className="flex items-center justify-between">
+                        <Link
+                          href={link.href}
+                          onClick={() => setOpen(false)}
+                          className="flex-1 py-4 text-[1.35rem] text-[color:var(--text)]"
+                        >
+                          {link.label}
+                        </Link>
+                        {/* a separate control, so tapping the word still
+                            navigates and only the chevron expands */}
+                        <button
+                          type="button"
+                          aria-label={
+                            servicesOpen
+                              ? "Collapse services"
+                              : "Expand services"
+                          }
+                          aria-expanded={servicesOpen}
+                          aria-controls="mobile-services"
+                          onClick={() => setServicesOpen((v) => !v)}
+                          className="glass-quiet ml-3 flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+                        >
+                          <motion.span
+                            aria-hidden
+                            animate={{ rotate: servicesOpen ? 180 : 0 }}
+                            transition={{
+                              type: "spring",
+                              stiffness: 220,
+                              damping: 22,
+                            }}
+                            className="flex"
+                          >
+                            <ChevronDown className="h-4 w-4 text-[color:var(--text)]" />
+                          </motion.span>
+                        </button>
+                      </div>
+
+                      <AnimatePresence initial={false}>
+                        {servicesOpen && (
+                          <motion.ul
+                            key="services"
+                            id="mobile-services"
+                            initial={still ? false : { height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={
+                              still
+                                ? { opacity: 0 }
+                                : { height: 0, opacity: 0 }
+                            }
+                            transition={{
+                              type: "spring",
+                              stiffness: 160,
+                              damping: 24,
+                            }}
+                            className="overflow-hidden"
+                          >
+                            {services.map((service) => (
+                              <li key={service.id}>
+                                <Link
+                                  href={`/services/${service.id}`}
+                                  onClick={() => setOpen(false)}
+                                  className="flex items-center gap-3 py-2.5 pl-1"
+                                >
+                                  <HexBadge
+                                    compact
+                                    label={service.title}
+                                    icon={
+                                      <ServiceIcon
+                                        id={service.id}
+                                        strokeWidth={1.7}
+                                      />
+                                    }
+                                  />
+                                  <span className="text-[14px] text-[color:var(--text-muted)]">
+                                    {service.title}
+                                  </span>
+                                </Link>
+                              </li>
+                            ))}
+                            <li className="pb-3" />
+                          </motion.ul>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setOpen(false)}
+                      className="border-b border-[color:var(--border)] py-4 text-[1.35rem] text-[color:var(--text)]"
+                    >
+                      {link.label}
+                    </Link>
+                  )
+                )}
               </nav>
 
               <div className="flex flex-col gap-4">

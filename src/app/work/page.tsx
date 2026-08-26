@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import Reveal, { RevealItem } from "@/components/motion/Reveal";
-import PortfolioTabs from "@/components/PortfolioTabs";
+import IndustryWork from "@/components/sections/IndustryWork";
 import PillButton from "@/components/motif/PillButton";
 import CTABand from "@/components/sections/CTABand";
-import { projects } from "@/data/projects";
 
 export const metadata: Metadata = {
   title: "Work — Premium Web Agency",
@@ -34,9 +33,7 @@ export default function WorkPage() {
         actions={<PillButton href="/contact">Start a project</PillButton>}
       />
 
-      <section className="container-px py-12 lg:py-16">
-        <PortfolioTabs projects={projects} />
-      </section>
+      <IndustryWork />
 
       <section className="container-px py-16">
         <Reveal stagger className="grid grid-cols-2 gap-4 lg:grid-cols-4">
